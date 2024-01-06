@@ -9,9 +9,7 @@ import Select from "react-select";
 
 
 const validationSchema = z.object({
-    
-
-    name: z.string().min(2).max(50),
+  name: z.string().min(2).max(50),
 mobile: z.string(),
 alternativeMobile: z.string().optional(),
 email: z
@@ -64,6 +62,7 @@ cityId: z.string(),
       register,
       handleSubmit,
       formState: { errors },
+      getValues,
       setValue,
     } = useForm({
       resolver: zodResolver(validationSchema),
@@ -84,15 +83,6 @@ cityId: z.string(),
     // token related
     const token = localStorage.getItem('token');
 
-  //   const [token, setToken] = useState('');
-  // useEffect(() => {
-  //   console.log()
-  //   if () {
-  //     setToken();
-  //   }
-  // }, []);
-
-    // second state and citi fields
     const [States, SetStates] = useState([]);
   const [Cities, SetCities] = useState([]);
   const [selectedState, setSelectedState] = useState("");
@@ -157,14 +147,14 @@ cityId: z.string(),
       console.log(data);
     };
 
-
+const value  =getValues();// check this if you want to use the values 
     return(
 
     // <form onSubmit={handleSubmit(onSubmit)}>
     //    <Card className="w-full p-4">
          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
 
-           <form className="mx-auto max-w-2xl" onSubmit={handleSubmit(onSubmit)}>
+<form className="mx-auto max-w-2xl" onSubmit={handleSubmit(onSubmit)}>
       <div className="bg-white rounded-md shadow-md p-4">
         {/* // */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -208,8 +198,8 @@ cityId: z.string(),
 <Select
     {...register("stateId", { required: "State is required" })}
     onChange={(selectedOption) => {
-      setValue("stateId", "");
       setValue("cityId", "");
+      setValue("stateId", selectedOption.value);
       fetchCities(selectedOption.value);
     }}
     options={states.map((state) => ({
@@ -234,6 +224,10 @@ cityId: z.string(),
 
 <Select
     {...register("cityId", { required: "City is required" })}
+    onChange={(selectedOption)=>{
+      setValue("cityId", selectedOption.value);
+
+    }}
     options={cities.map((city) => ({
       value: city._id,
       label: city.name
@@ -287,6 +281,7 @@ cityId: z.string(),
               <label className="block text-sm font-medium text-gray-600">Alternative Mobile</label>
               <input onChange={handleChange}
                 {...register("alternativeMobile", { required: "Alternative Mobile is required" })}
+                name="alternativeMobile"
                 className={`mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring focus:border-blue-300 ${
                   errors.alternativeMobile ? "border-red-500" : ""
                 }`}
@@ -302,6 +297,7 @@ cityId: z.string(),
             <div className="mb-4">
               <label className="block text-sm font-medium text-gray-600">Email</label>
               <input onChange={handleChange}
+                              name="email"
                 {...register("email", { required: "Email is required" })}
                 className={`mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring focus:border-blue-300 ${
                     errors.email ? "border-red-500" : ""
@@ -317,6 +313,7 @@ cityId: z.string(),
             <div className="mb-4">
               <label className="block text-sm font-medium text-gray-600">Pan Card</label>
               <input onChange={handleChange}
+                name="email"
                 {...register("panCard", { required: "Pan Card is required" })}
                 className={`mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring focus:border-blue-300 ${
                   errors.panCard ? "border-red-500" : ""
@@ -332,6 +329,7 @@ cityId: z.string(),
             <div className="mb-4">
               <label className="block text-sm font-medium text-gray-600">Aadhar Card</label>
               <input onChange={handleChange}
+                    name="aadharCard"
                 {...register("aadharCard", { required: "Aadhar Card is required" })}
                 className={`mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring focus:border-blue-300 ${
                   errors.aadharCard ? "border-red-500" : ""
@@ -348,6 +346,7 @@ cityId: z.string(),
             <div className="mb-4">
               <label className="block text-sm font-medium text-gray-600">Address Line 1</label>
               <input onChange={handleChange}
+                name="addressLine1"
                 {...register("addressLine1", { required: "Address is required" })}
                 className={`mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring focus:border-blue-300 ${
                   errors.addressLine1 ? "border-red-500" : ""
@@ -363,7 +362,9 @@ cityId: z.string(),
             <div className="mb-4">
               <label className="block text-sm font-medium text-gray-600">Address Line 2</label>
               <input onChange={handleChange}
+                name="addressLine1"
                 {...register("addressLine2")}
+
                 className={`mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring focus:border-blue-300 ${
                   errors.addressLine2 ? "border-red-500" : ""
                 }`}
@@ -381,9 +382,10 @@ cityId: z.string(),
         <div className="mb-4">
           <label className="block text-sm font-medium text-gray-600">State</label>
           <select
-            {...register("State", { required: "State is required" })}
+            {...register("state", { required: "State is required" })}
             onChange={(e) => {
               setValue("city", "");
+              setValue("state", e.target.value);
               setSelectedState(e.target.value);
             }}
             className={`mt-1 p-2 border rounded-md focus:outline-none focus:ring focus:border-blue-300 ${
@@ -408,19 +410,19 @@ cityId: z.string(),
         <div className="mb-4">
           <label className="block text-sm font-medium text-gray-600">City</label>
           <select
-            {...register("City", { required: "City is required" })}
+            {...register("city", { required: "City is required" })}
             className={`mt-1 p-2 border rounded-md focus:outline-none focus:ring focus:border-blue-300 ${
-              errors.City ? "border-red-500" : ""
+              errors.city ? "border-red-500" : ""
             }`}
           >
             <option value="" disabled>Select City</option>
-            {Cities.map((City) => (
-              <option key={City} value={City}>
-                {City}
+            {Cities.map((city) => (
+              <option key={city} value={city}>
+                {city}
               </option>
             ))}
           </select>
-          {errors.City && <span className="text-red-500 text-xs">{errors.City.message}</span>}
+          {errors.city && <span className="text-red-500 text-xs">{errors.City.message}</span>}
         </div>
       </div>
 
@@ -431,6 +433,7 @@ cityId: z.string(),
             <div className="mb-4">
               <label className="block text-sm font-medium text-gray-600">Pincode</label>
               <input onChange={handleChange}
+                name="pincode"
                 {...register("pincode", { required: "Pincode is required" })}
                 className={`mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring focus:border-blue-300 ${
                   errors.pincode ? "border-red-500" : ""
@@ -447,6 +450,8 @@ cityId: z.string(),
             <div className="mb-4">
               <label className="block text-sm font-medium text-gray-600">Username</label>
               <input onChange={handleChange}
+                              name="pincode"
+
                 {...register("username", { required: "Username is required" })}
                 className={`mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring focus:border-blue-300 ${
                   errors.username ? "border-red-500" : ""
@@ -472,9 +477,10 @@ cityId: z.string(),
           </div>
 
           <div className="col-span-3">
-            <button type="submit" className="w-full bg-blue-500 text-white p-2 rounded-md">
-              Submit
-            </button>
+          <button type="submit" className="w-full bg-blue-500 text-white p-2 rounded-md">
+  Submit
+</button>
+
           </div>
         </div>
     </form>

@@ -1,0 +1,25 @@
+[
+    {
+        "title": "Repo Agent",
+        "icon": "bi bi-box-seam-fill",
+        "childrens": [
+            {
+                "title": "Add Repo Agent",
+                "path": "/addRepoAgent"
+            },
+            {
+                "title": "Repo Agent Details",
+                "path": "/RepoAgentDetails"
+            },
+            {
+                "title": "Generate ID Card",
+                "path": "/generateIdCard"
+            },
+            {
+                "title": "ID Card Details",
+                "path": "/idCardDetails"
+            }
+        ]
+    }
+    
+]

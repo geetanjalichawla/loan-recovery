@@ -7,7 +7,8 @@ const Navbar = () => {
   return (
     <div className='h-[50px] w-screen bg-black flex justify-between'>
         <div className='h-[100px] w-[170px] object-cover'><img src={logo} alt="logo" /></div>
-        <div className='text-white px-4 py-3'>{currentUser.user.name}</div>
+        {/* <div className='text-white px-4 py-3'>{currentUser.user.name}</div> */}
+        {/* {console.log(currentUser.user.name)} */}
     </div>
   )
 }

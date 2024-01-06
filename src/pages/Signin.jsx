@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom'
 import { signInFailure, signInStart, signInSuccess } from '../redux/user/userSlice';
 import logo from "../assets/logo.jpeg"
+import { BASE_URL } from '../main';
 
 const Signin = () => {
 
@@ -20,7 +21,7 @@ const Signin = () => {
       try {
         e.preventDefault();
         dispatch(signInStart())
-        const res=await fetch('https://vehicle-node.onrender.com/backend/api/v1/login-user',{
+        const res=await fetch(`${BASE_URL}/login-user`,{
           method : 'POST',
           headers:{
             'Content-Type':'application/json'
@@ -28,12 +29,18 @@ const Signin = () => {
           body:JSON.stringify(formData)
         });
         const data=await res.json();
+        localStorage.setItem("user", JSON.stringify(data));
         if(data.success === false){
            dispatch( signInFailure(data.message))
-          return
+          return;
         }
-        dispatch(signInSuccess(data))
-        navigate('/dashboard')
+    //     const { token } = data;
+
+    // // storing token in local storage
+    dispatch(signInSuccess(data))
+    localStorage.setItem('token', data.user.token);
+    navigate('/dashboard')
+    // console.log("jvjhj", currentUser);
         console.log(data);
       } catch (error) {
         dispatch(signInFailure(error.message))
@@ -56,7 +63,7 @@ const Signin = () => {
           </div>     
           <p className='text-red-700 font-semibold'>Forgot password ?</p>   
       </div>
-      {/* {error && <p className='text-red-500 mt-5'>{error}</p>} */}
+      {error && <p className='text-red-500 mt-5'>{error}</p>}
     </div>
   )
 }

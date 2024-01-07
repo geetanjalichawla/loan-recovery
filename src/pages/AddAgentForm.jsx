@@ -6,6 +6,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import citiesData from "../Data/stateCityData (1).json";
 import { BASE_URL } from "../main";
 import Select from "react-select";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 
 
 const validationSchema = z.object({
@@ -79,6 +82,9 @@ cityId: z.string(),
         [e.target.id]: e.target.value,
       });
     };
+
+
+    
 
     // token related
     const token = localStorage.getItem('token');
@@ -154,10 +160,17 @@ cityId: z.string(),
         });
         // handling api response
         console.log('API Response:', response.data);
+        // success toast
+      toast.success('Form submitted successfully');
+        
       }
+
       catch (error) {
         //  api call error
         console.error('API Request Error:', error);
+        // error toast
+      toast.error('Error submitting form');
+       
       }
     };
 
@@ -167,13 +180,13 @@ const value  =getValues();// check this if you want to use the values
 
     // <form onSubmit={handleSubmit(onSubmit)}>
     //    <Card className="w-full p-4">
-        //  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        <div className="flex" >
-         <div className="w-3/4 p-4">
+        //  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
+        // <div className="" > 
+         <div className="grid">
 
 {/* <form className="mx-auto max-w-2xl" onSubmit={handleSubmit(onSubmit)}> */}
-<form className="max-w-2xl mx-auto bg-white rounded-md shadow-md p-4" onSubmit={handleSubmit(onSubmit)}>
-      <div className="bg-white rounded-md shadow-md p-4">
+<form className=" bg-gray-500 rounded-md shadow-md p-4" onSubmit={handleSubmit(onSubmit)}>
+      {/* <div className="bg-white rounded-md shadow-md p-4"> */}
         {/* // */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {/* <div className="col-span-1"> */}
@@ -206,7 +219,7 @@ const value  =getValues();// check this if you want to use the values
             {/* </div> */}
             {/* // */}
 
-            <div className="col-span-1">
+            {/* <div className="col-span-1"> */}
             {/* states */}
 
             <div className="mb-4">
@@ -230,7 +243,7 @@ const value  =getValues();// check this if you want to use the values
   />
               {errors.stateId && <span className="text-red-500 text-xs">{errors.stateId.message}</span>}
             </div>
-            </div>
+            {/* </div> */}
             {/* // */}
             {/* <div className="col-span-1"> */}
 
@@ -510,10 +523,13 @@ const value  =getValues();// check this if you want to use the values
 </button>
 
           </div>
-        </div>
+        {/* </div> */}
     </form>
-    </div>
+<ToastContainer position="top-center" autoClose={5000} hideProgressBar={false} newestOnTop={false} closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover />
     </div>
 
-    );}
+   
+
+    );
+  };
     export default AddAgentForm;

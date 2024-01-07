@@ -4,6 +4,7 @@ import Signin from './pages/Signin'
 import Signup from './pages/SignUp'
 import Dashboard from './pages/Dashboard'
 import Navbar from './pages/Navbar'
+import AddAgentForm from './pages/AddAgentForm'
 
 const App = () => {
   return (
@@ -13,6 +14,7 @@ const App = () => {
             <Route path='/' element={<Signin/>} />
             <Route path='/register' element={<Signup/>} />
             <Route path='/dashboard' element={<Dashboard/>} />
+            <Route path='/addRepoAgent' element={<AddAgentForm />} />
           </Routes>
     </BrowserRouter>
   )

@@ -143,22 +143,40 @@ cityId: z.string(),
         });
     };
   
-    const onSubmit = (data) => {
+    const onSubmit = async (data) => {
       console.log(data);
+      try {
+        // making api call to submit form data
+        const response = await axios.post(`${BASE_URL}/create-repo-agent`, data, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        // handling api response
+        console.log('API Response:', response.data);
+      }
+      catch (error) {
+        //  api call error
+        console.error('API Request Error:', error);
+      }
     };
+
 
 const value  =getValues();// check this if you want to use the values 
     return(
 
     // <form onSubmit={handleSubmit(onSubmit)}>
     //    <Card className="w-full p-4">
-         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        //  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="flex" >
+         <div className="w-3/4 p-4">
 
-<form className="mx-auto max-w-2xl" onSubmit={handleSubmit(onSubmit)}>
+{/* <form className="mx-auto max-w-2xl" onSubmit={handleSubmit(onSubmit)}> */}
+<form className="max-w-2xl mx-auto bg-white rounded-md shadow-md p-4" onSubmit={handleSubmit(onSubmit)}>
       <div className="bg-white rounded-md shadow-md p-4">
         {/* // */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          <div className="col-span-1">
+          {/* <div className="col-span-1"> */}
 
             {/* zones */}
             <div className="mb-4">
@@ -185,7 +203,7 @@ const value  =getValues();// check this if you want to use the values
 
               {errors.zoneId && <span className="text-red-500 text-xs">{errors.zoneId.message}</span>}
             </div>
-            </div>
+            {/* </div> */}
             {/* // */}
 
             <div className="col-span-1">
@@ -214,7 +232,7 @@ const value  =getValues();// check this if you want to use the values
             </div>
             </div>
             {/* // */}
-            <div className="col-span-1">
+            {/* <div className="col-span-1"> */}
 
             {/* cities */}
 
@@ -238,14 +256,13 @@ const value  =getValues();// check this if you want to use the values
   />
               {errors.cityId && <span className="text-red-500 text-xs">{errors.cityId.message}</span>}
             </div>    
-            </div>    
+            {/* </div>     */}
 
-          </div>
 
           {/* first row */}
           {/* name */}
 
-          <div className="col-span-1">
+          {/* <div className="col-span-1"> */}
             <div className="mb-4">
               <label className="block text-sm font-medium text-gray-600">Name</label>
               <input onChange={handleChange}
@@ -253,10 +270,10 @@ const value  =getValues();// check this if you want to use the values
                 className={`mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring focus:border-blue-300 ${
                   errors.name ? "border-red-500" : ""
                 }`}
-              />
+                />
               {errors.name && <span className="text-red-500 text-xs">{errors.name.message}</span>}
             </div>
-          </div>
+          {/* </div> */}
 
           {/* mobile */}
 
@@ -269,7 +286,7 @@ const value  =getValues();// check this if you want to use the values
                 className={`mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring focus:border-blue-300 ${
                   errors.mobile ? "border-red-500" : ""
                 }`}
-              />
+                />
               {errors.mobile && <span className="text-red-500 text-xs">{errors.mobile.message}</span>}
             </div>
           </div>
@@ -285,7 +302,7 @@ const value  =getValues();// check this if you want to use the values
                 className={`mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring focus:border-blue-300 ${
                   errors.alternativeMobile ? "border-red-500" : ""
                 }`}
-              />
+                />
               {errors.alternativeMobile && <span className="text-red-500 text-xs">{errors.alternativeMobile.message}</span>}
             </div>
           </div>
@@ -298,11 +315,11 @@ const value  =getValues();// check this if you want to use the values
               <label className="block text-sm font-medium text-gray-600">Email</label>
               <input onChange={handleChange}
                               name="email"
-                {...register("email", { required: "Email is required" })}
-                className={`mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring focus:border-blue-300 ${
-                    errors.email ? "border-red-500" : ""
-                }`}
-                />
+                              {...register("email", { required: "Email is required" })}
+                              className={`mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring focus:border-blue-300 ${
+                                errors.email ? "border-red-500" : ""
+                              }`}
+                              />
               {errors.email && <span className="text-red-500 text-xs">{errors.email.message}</span>}
             </div>
           </div>
@@ -318,7 +335,7 @@ const value  =getValues();// check this if you want to use the values
                 className={`mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring focus:border-blue-300 ${
                   errors.panCard ? "border-red-500" : ""
                 }`}
-              />
+                />
               {errors.panCard && <span className="text-red-500 text-xs">{errors.panCard.message}</span>}
             </div>
           </div>
@@ -338,11 +355,15 @@ const value  =getValues();// check this if you want to use the values
               {errors.aadharCard && <span className="text-red-500 text-xs">{errors.aadharCard.message}</span>}
             </div>
           </div>
+                </div>
 
           {/* third row */}
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4">
+
           {/* Address Line 1 */}
 
-          <div className="col-span-1">
+          {/* <div className="col-span-1"> */}
             <div className="mb-4">
               <label className="block text-sm font-medium text-gray-600">Address Line 1</label>
               <input onChange={handleChange}
@@ -354,11 +375,11 @@ const value  =getValues();// check this if you want to use the values
               />
               {errors.addressLine1 && <span className="text-red-500 text-xs">{errors.addressLine1.message}</span>}
             </div>
-          </div>
+          {/* </div> */}
 
           {/* Address Line 2 */}
 
-          <div className="col-span-1">
+          {/* <div className="col-span-1"> */}
             <div className="mb-4">
               <label className="block text-sm font-medium text-gray-600">Address Line 2</label>
               <input onChange={handleChange}
@@ -371,14 +392,15 @@ const value  =getValues();// check this if you want to use the values
               />
               {errors.addressLine2 && <span className="text-red-500 text-xs">{errors.addressLine2.message}</span>}
             </div>
+          {/* </div> */}
           </div>
 
           {/* fourth row */}
           {/* state */}
 
           {/* */}
-
-<div className="col-span-1">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+{/* <div className="col-span-1"> */}
         <div className="mb-4">
           <label className="block text-sm font-medium text-gray-600">State</label>
           <select
@@ -401,12 +423,12 @@ const value  =getValues();// check this if you want to use the values
           </select>
           {errors.State && <span className="text-red-500 text-xs">{errors.State.message}</span>}
         </div>
-      </div>
+      {/* </div> */}
 
           {/* city */}
           {/**/}
 
-<div className="col-span-1">
+{/* <div className="col-span-1"> */}
         <div className="mb-4">
           <label className="block text-sm font-medium text-gray-600">City</label>
           <select
@@ -424,12 +446,12 @@ const value  =getValues();// check this if you want to use the values
           </select>
           {errors.city && <span className="text-red-500 text-xs">{errors.City.message}</span>}
         </div>
-      </div>
+      {/* </div> */}
 
           {/* fifth row */}
           {/* Pincode */}
 
-          <div className="col-span-1">
+          {/* <div className="col-span-1"> */}
             <div className="mb-4">
               <label className="block text-sm font-medium text-gray-600">Pincode</label>
               <input onChange={handleChange}
@@ -441,12 +463,17 @@ const value  =getValues();// check this if you want to use the values
               />
               {errors.pincode && <span className="text-red-500 text-xs">{errors.pincode.message}</span>}
             </div>
+          {/* </div> */}
           </div>
 
+
           {/* sixth row */}
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4">
+
           {/* username */}
 
-          <div className="col-span-1">
+          {/* <div className="col-span-1"> */}
             <div className="mb-4">
               <label className="block text-sm font-medium text-gray-600">Username</label>
               <input onChange={handleChange}
@@ -459,11 +486,11 @@ const value  =getValues();// check this if you want to use the values
               />
               {errors.username && <span className="text-red-500 text-xs">{errors.username.message}</span>}
             </div>
-          </div>
+          {/* </div> */}
 
           {/* password */}
 
-          <div className="col-span-1">
+          {/* <div className="col-span-1"> */}
             <div className="mb-4">
               <label className="block text-sm font-medium text-gray-600">Password</label>
               <input onChange={handleChange}
@@ -474,6 +501,7 @@ const value  =getValues();// check this if you want to use the values
               />
               {errors.password && <span className="text-red-500 text-xs">{errors.password.message}</span>}
             </div>
+          {/* </div> */}
           </div>
 
           <div className="col-span-3">
@@ -484,6 +512,7 @@ const value  =getValues();// check this if you want to use the values
           </div>
         </div>
     </form>
+    </div>
     </div>
 
     );}

@@ -160,9 +160,27 @@ const AddAgentForm = () => {
     } catch (error) {
       //  api call error
       console.error("API Request Error:", error);
-      console.log("API Response:", response);
-      // error toast
-      toast.error("Error form submitting");
+
+      if (error.response) {
+        // if status code falls out of the range of 2xx
+        console.error("Server responded with:", error.response.data);
+        // error message from the response
+        const errorMessage = error.response.data.message || "Error form submitting";
+        // error toast showing the message
+        toast.error(errorMessage);
+      } else if (error.request) {
+        // if no response was received
+        console.error("No response received:", error.request);
+        toast.error("Server didn't respond. Please try again!");
+      } else {
+        // something went wrong
+        console.error("Error setting up the request:", error.message);
+        toast.error("Something went wrong :(");
+      }
+
+
+
+
     }
   };
 

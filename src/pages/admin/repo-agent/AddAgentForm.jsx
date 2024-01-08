@@ -11,7 +11,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 const validationSchema = z.object({
   name: z.string().min(2).max(50),
-  mobile: z.string(),
+  mobile: z.number().min(10).max(10),
   alternativeMobile: z.string().optional(),
   email: z
     .string()
@@ -560,13 +560,10 @@ const AddAgentForm = () => {
           )}
         </div>
 
-        <button
-          type="submit"
-          className="w-full h-10 mt-36 bg-blue-500 text-white  rounded-md"
-        >
-          Submit
-        </button>
-        {/* </div> */}
+        <button disabled={isSubmitting}  className='w-full h-10 mt-36 bg-blue-500 text-white  rounded-md uppercase hover:opacity-95 disabled:opacity-85'>
+          {isSubmitting ? 'Please Wait...' : 'Submit'}
+          </button>
+
       </form>
       <ToastContainer
         position="top-center"

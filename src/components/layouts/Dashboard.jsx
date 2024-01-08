@@ -8,7 +8,7 @@ const Dashboard = ({ children }) => {
       <Navbar />
       <Sidebar />
 
-      <div className="mt-28 ml-14 p-4 sm:ml-64">{children}</div>
+      <div className=" px-10 py-24 sm:ml-64">{children}</div>
     </div>
   );
 };

@@ -3,8 +3,8 @@ import { useForm } from "react-hook-form";
 import axios from "axios";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import citiesData from "../Data/stateCityData (1).json";
-import { BASE_URL } from "../main";
+import citiesData from "../../../Data/stateCityData (1).json";
+import { BASE_URL } from "../../../main";
 import Select from "react-select";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -63,9 +63,10 @@ const AddAgentForm = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting },
     getValues,
     setValue,
+    
   } = useForm({
     resolver: zodResolver(validationSchema),
   });
@@ -165,7 +166,8 @@ const AddAgentForm = () => {
         // if status code falls out of the range of 2xx
         console.error("Server responded with:", error.response.data);
         // error message from the response
-        const errorMessage = error.response.data.message || "Error form submitting";
+        const errorMessage =
+          error.response.data.message || "Error form submitting";
         // error toast showing the message
         toast.error(errorMessage);
       } else if (error.request) {
@@ -177,10 +179,6 @@ const AddAgentForm = () => {
         console.error("Error setting up the request:", error.message);
         toast.error("Something went wrong :(");
       }
-
-
-
-
     }
   };
 
@@ -561,13 +559,13 @@ const AddAgentForm = () => {
             </span>
           )}
         </div>
-      
-          <button
-            type="submit"
-            className="w-full h-10 mt-36 bg-blue-500 text-white  rounded-md"
-          >
-            Submit
-          </button>
+
+        <button
+          type="submit"
+          className="w-full h-10 mt-36 bg-blue-500 text-white  rounded-md"
+        >
+          Submit
+        </button>
         {/* </div> */}
       </form>
       <ToastContainer

@@ -1,23 +1,22 @@
-import React from 'react'
-import { BrowserRouter, Route, Routes } from 'react-router-dom'
-import Signin from './pages/Signin'
-import Signup from './pages/SignUp'
-import Dashboard from './pages/Dashboard'
-// import Navbar from './pages/Navbar'
-import AddAgentForm from './pages/AddAgentForm'
+import React from "react";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import Signin from "./pages/auth/Signin";
+import Signup from "./pages/auth/SignUp";
+import Dashboard from "./components/layouts/Dashboard";
+import AddAgentForm from "./pages/admin/repo-agent/AddAgentForm";
 
 const App = () => {
   return (
     <BrowserRouter>
-        {/* <Navbar/> */}
-          <Routes>
-            <Route path='/' element={<Signin/>} />
-            <Route path='/register' element={<Signup/>} />
-            <Route path='/dashboard' element={<Dashboard/>} />
-            <Route path='/addRepoAgent' element={<AddAgentForm />} />
-          </Routes>
+    
+      <Routes>
+        <Route path="/register" element={<Signup />} />
+        <Route path="/" element={<Signin />} />
+        <Route path="/dashboard" element={<Dashboard > <AddAgentForm /></Dashboard>} />
+        {/* <Route path="/add-repo-agent" element={<AddAgentForm />} /> */}
+      </Routes>
     </BrowserRouter>
-  )
-}
+  );
+};
 
-export default App
+export default App;

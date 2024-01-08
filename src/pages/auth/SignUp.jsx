@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import logo from "../assets/logo.jpeg"
+// import logo from "../assets/logo.jpeg"
 const Signup = () => {
 
   const [formData, setFormData] = useState({});

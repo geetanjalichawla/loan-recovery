@@ -5,21 +5,42 @@
         "childrens": [
             {
                 "title": "Add Repo Agent",
-                "path": "/addRepoAgent"
+                "path": "/add-repo-agent"
             },
             {
                 "title": "Repo Agent Details",
-                "path": "/RepoAgentDetails"
+                "path": "/repo-agent-details"
             },
             {
                 "title": "Generate ID Card",
-                "path": "/generateIdCard"
+                "path": "/generate-id-card"
             },
             {
                 "title": "ID Card Details",
-                "path": "/idCardDetails"
+                "path": "/id-card-details"
+            }
+        ]
+    },
+    {
+        "title": "Repo Agent",
+        "icon": "bi bi-box-seam-fill",
+        "childrens": [
+            {
+                "title": "Add Repo Agent",
+                "path": "/add-repo-agent"
+            },
+            {
+                "title": "Repo Agent Details",
+                "path": "/repo-agent-details"
+            },
+            {
+                "title": "Generate ID Card",
+                "path": "/generate-id-card"
+            },
+            {
+                "title": "ID Card Details",
+                "path": "/id-card-details"
             }
         ]
     }
-    
 ]

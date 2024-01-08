@@ -3,13 +3,13 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import Signin from './pages/Signin'
 import Signup from './pages/SignUp'
 import Dashboard from './pages/Dashboard'
-import Navbar from './pages/Navbar'
+// import Navbar from './pages/Navbar'
 import AddAgentForm from './pages/AddAgentForm'
 
 const App = () => {
   return (
     <BrowserRouter>
-        <Navbar/>
+        {/* <Navbar/> */}
           <Routes>
             <Route path='/' element={<Signin/>} />
             <Route path='/register' element={<Signup/>} />

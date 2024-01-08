@@ -116,3 +116,8 @@
     display: inline-block;
     width: 1.7em;
   }
+
+  input, select{
+    color:black !important;
+    width:100%;
+  }

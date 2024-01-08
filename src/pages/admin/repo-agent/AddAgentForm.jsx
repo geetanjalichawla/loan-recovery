@@ -276,7 +276,7 @@ const AddAgentForm = () => {
           <label className="block text-sm font-medium text-gray-600">
             Name
           </label>
-          <input
+          <input type="text"
             onChange={handleChange}
             {...register("name", { required: "Name is required" })}
             className={`mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring focus:border-blue-300 ${
@@ -294,7 +294,7 @@ const AddAgentForm = () => {
           <label className="block text-sm font-medium text-gray-600">
             Mobile
           </label>
-          <input
+          <input type="tel"
             onChange={handleChange}
             {...register("mobile", { required: "Mobile is required" })}
             className={`mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring focus:border-blue-300 ${
@@ -314,7 +314,7 @@ const AddAgentForm = () => {
           <label className="block text-sm font-medium text-gray-600">
             Alternative Mobile
           </label>
-          <input
+          <input type="tel"
             onChange={handleChange}
             {...register("alternativeMobile", {
               required: "Alternative Mobile is required",
@@ -338,7 +338,7 @@ const AddAgentForm = () => {
           <label className="block text-sm font-medium text-gray-600">
             Email
           </label>
-          <input
+          <input type="email"
             onChange={handleChange}
             name="email"
             {...register("email", { required: "Email is required" })}
@@ -378,7 +378,7 @@ const AddAgentForm = () => {
           <label className="block text-sm font-medium text-gray-600">
             Aadhar Card
           </label>
-          <input
+          <input 
             onChange={handleChange}
             name="aadharCard"
             {...register("aadharCard", { required: "Aadhar Card is required" })}
@@ -401,7 +401,7 @@ const AddAgentForm = () => {
           <label className="block text-sm font-medium text-gray-600">
             Address Line 1
           </label>
-          <input
+          <input type="text"
             onChange={handleChange}
             name="addressLine1"
             {...register("addressLine1", { required: "Address is required" })}
@@ -422,7 +422,7 @@ const AddAgentForm = () => {
           <label className="block text-sm font-medium text-gray-600">
             Address Line 2
           </label>
-          <input
+          <input type="text"
             onChange={handleChange}
             name="addressLine1"
             {...register("addressLine2")}
@@ -502,7 +502,7 @@ const AddAgentForm = () => {
           <label className="block text-sm font-medium text-gray-600">
             Pincode
           </label>
-          <input
+          <input 
             onChange={handleChange}
             name="pincode"
             {...register("pincode", { required: "Pincode is required" })}
@@ -546,7 +546,7 @@ const AddAgentForm = () => {
           <label className="block text-sm font-medium text-gray-600">
             Password
           </label>
-          <input
+          <input type="password"
             onChange={handleChange}
             {...register("password", { required: "Password is required" })}
             className={`mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring focus:border-blue-300 ${

@@ -1,13 +1,13 @@
-import React from "react";
 import { useEffect } from "react";
 import ProtectedRoute from "./pages/auth/ProtectedRoute";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Signin from "./pages/auth/Signin";
+import SignIn from "./pages/auth/Signin";
 import Signup from "./pages/auth/SignUp";
 import Dashboard from "./components/layouts/Dashboard";
 import AddAgentForm from "./pages/admin/repo-agent/AddAgentForm";
 import { useDispatch, useSelector } from "react-redux";
 import toast, { Toaster } from "react-hot-toast";
+import AdminDashboard from "./pages/admin/Home/dashboard";
 
 
 const App = () => {
@@ -34,19 +34,31 @@ const App = () => {
           <Route
             path="/login"
             element={
-              <ProtectedRoute isAuthenticated={!auth} redirect="/">
-                <Signin />
+              <ProtectedRoute isAuthenticated={!auth} redirect="/dashboard">
+                <SignIn />
               </ProtectedRoute>
             }
           />
 
+          <Route
+            path="/add-repo-agent"
+            element={
+              <ProtectedRoute isAuthenticated={!!auth} redirect="/login">
+
+                <Dashboard>
+                <AddAgentForm />
+              </Dashboard>
+
+              </ProtectedRoute>
+            }
+          />
           <Route
             path="/"
             element={
               <ProtectedRoute isAuthenticated={!!auth} redirect="/login">
 
                 <Dashboard>
-                <AddAgentForm />
+                <AdminDashboard />
               </Dashboard>
 
               </ProtectedRoute>

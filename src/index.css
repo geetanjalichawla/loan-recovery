@@ -16,7 +16,7 @@
   body{
     font-family: Arial, Helvetica, sans-serif;
     font-size: 16px;
-    color: #fff;
+    
   }
   
   .main{
@@ -62,6 +62,7 @@
   }
   
   .sidebar{
+    color: white;
     width: 260px;
     flex-shrink: 0;
     height: 100%;

@@ -25,16 +25,36 @@ function RepoAgentList() {
 
   const columns = [
     // Define your table columns based on the data properties
+    { Header: "Zone", accessor: "zoneId.name" },
+    { Header: "State", accessor: "stateId.name" },
+    { Header: "City", accessor: "cityId.name" },
     { Header: "Name", accessor: "name" },
-    { Header: "Mobile", accessor: "mobile" },
+    { Header: "Mobile 1", accessor: "mobile" },
+    { Header: "Mobile 2", accessor: "alternativeMobile" },
+    { Header: "Email", accessor: "email" },
+    { Header: "Pan Card", accessor: "panCard" },
+    { Header: "Aadhaar card", accessor: "aadharCard" },
+    { Header: "Address", accessor: "addressLine1" },
+    { Header: "State", accessor: "state" },
+    { Header: "City", accessor: "city" },
+    { Header: "Pin Code", accessor: "pincode" },
+    { Header: "Username", accessor: "username" },
+    { Header: "Status", accessor: "status" }
     // Add more columns as needed
   ];
 
   return (
-    <div>
-      <h2>Repo Agents List</h2>
+
+    <div className="container bg-blue-400 text-white  mx-auto my-4">
+      <h2 className="text-2xl font-bold mb-4">Repo Agents List</h2>
       <CustomTable columns={columns} data={repoAgents} searchEnabled={true} />
     </div>
+
+
+    // <div>
+    //   <h2>Repo Agents List</h2>
+    //   <CustomTable columns={columns} data={repoAgents} searchEnabled={true} />
+    // </div>
   );
 }
 

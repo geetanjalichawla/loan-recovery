@@ -23,12 +23,12 @@
         ]
     },
     {
-        "title": "Upload Data",
+        "title": "Office Staff",
         "icon": "bi bi-box-seam-fill",
         "childrens": [
             {
-                "title": "Bank Wise Data",
-                "path": "/upload-bank-wise-data"
+                "title": "All Office Staff",
+                "path": "/office-staff/all"
             },
             {
                 "title": "Combine Data",

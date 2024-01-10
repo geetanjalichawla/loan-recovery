@@ -11,6 +11,7 @@ import AdminDashboard from "./pages/admin/Home/dashboard";
 import RepoAgentList from "./pages/admin/repo-agent/all";
 import GenerateRepoId from "./pages/admin/repo-agent/gentrate-id";
 import IdCardList from "./pages/admin/repo-agent/id-all";
+import OfficeStaffList from "./pages/admin/office-staff/all";
 
 const App = () => {
   const auth = localStorage.getItem("token");
@@ -78,6 +79,16 @@ const App = () => {
             <ProtectedRoute isAuthenticated={!!auth} redirect="/login">
               <Dashboard>
                 <IdCardList />
+              </Dashboard>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/office-staff/all"
+          element={
+            <ProtectedRoute isAuthenticated={!!auth} redirect="/login">
+              <Dashboard>
+                <OfficeStaffList />
               </Dashboard>
             </ProtectedRoute>
           }

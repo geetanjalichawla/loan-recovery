@@ -37,7 +37,7 @@ const App = () => {
         <Route
           path="/login"
           element={
-            <ProtectedRoute isAuthenticated={!auth} redirect="/dashboard">
+            <ProtectedRoute isAuthenticated={!auth} redirect="/">
               <SignIn />
             </ProtectedRoute>
           }

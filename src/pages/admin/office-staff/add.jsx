@@ -149,23 +149,8 @@ const AddStaffForm = () => {
 
   const onSubmit = async (data) => {
     try {
-      const formData = new FormData();
-
-      // Append text data
-      Object.keys(data).forEach((key) => {
-        formData.append(key, data[key]);
-      });
-
-      // Append file data
-      formData.append("photo", data.photo[0]);
-      formData.append("signature", data.signature[0]);
-      formData.append("pancard", data.pancard[0]);
-      formData.append("aadhar", data.aadhar[0]);
-      formData.append("cheque", data.cheque[0]);
-      formData.append("licence", data.licence[0]);
-      debugger;
       // making api call to submit form data
-      const response = await axios.post(`${BASE_URL}/create-staf`, formData, {
+      const response = await axios.post(`${BASE_URL}/create-staf`, data, {
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "multipart/form-data", // Make sure to set the content type

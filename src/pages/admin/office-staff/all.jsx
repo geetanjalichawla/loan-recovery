@@ -87,12 +87,6 @@ const columns = [
       <h2 className="text-2xl font-bold mb-4">Office Staff List</h2>
       <CustomTable columns={columns} data={repoAgents} searchEnabled={true} />
     </div>
-
-
-    // <div>
-    //   <h2>Repo Agents List</h2>
-    //   <CustomTable columns={columns} data={repoAgents} searchEnabled={true} />
-    // </div>
   );
 }
 

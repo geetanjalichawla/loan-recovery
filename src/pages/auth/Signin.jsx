@@ -86,7 +86,7 @@ const Signin = () => {
 
   <div className="flex justify-between gap-2 mt-5">
         <div className=" font-semibold">
-          <span className="text-black" >Don &apos t have an account?</span>
+          <span className="text-black" >Don't have an account?</span>
           <Link to="/register">
             <span className="text-blue-700"> Register</span>
           </Link>

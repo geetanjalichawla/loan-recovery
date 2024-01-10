@@ -1,7 +1,13 @@
 [
     {
+        "icon": "bi  bi-grid ",
+        "title": "Dashboard",
+        "path": "/"
+    },
+
+    {
         "title": "Repo Agent",
-        "icon": "bi bi-box-seam-fill",
+        "icon": "bi  bi-person-fill",
         "childrens": [
             {
                 "title": "Add Repo Agent",
@@ -24,7 +30,7 @@
     },
     {
         "title": "Office Staff",
-        "icon": "bi bi-box-seam-fill",
+        "icon": "bi  bi-person-badge-fill",
         "childrens": [
             {
                 "title": "All Office Staff",

@@ -1,11 +1,10 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 // import logo from "../assets/logo.jpeg"
-const Signup = () => {
+const SignUp = () => {
 
   const [formData, setFormData] = useState({});
   const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(false);
   const navigate = useNavigate()
   const handleChange = (e) => {
     setFormData({
@@ -16,7 +15,6 @@ const Signup = () => {
   const handleSubmit = async (e) => {
     try {
       e.preventDefault();
-      setLoading(true);
       const res = await fetch('https://vehicle-node.onrender.com/backend/api/v1/register-user', {
         method: 'POST',
         headers: {
@@ -28,22 +26,20 @@ const Signup = () => {
       console.log(data);
       if (data.success === false) {
         setError(data.message);
-        setLoading(false);
         return;
       }
-      setLoading(false);
       setError(null);
       navigate('/')
+      
       console.log(data);
     } catch (error) {
-      setLoading(false);
       setError(error.message)
     }
   }
   return (
     <div className='p-3 max-w-lg mx-auto border mt-16'>
       <h1 className='text-3xl text-center font-semibold my-7'>Register </h1>
-      <img src={logo} alt="" />
+      {/* <img src={logo} alt="" /> */}
       <form onSubmit={handleSubmit} className='flex flex-col gap-4'>
         <input type="text" placeholder='username' className='border p-3 rounded-lg' id='name' onChange={handleChange} />
         <input type="email" placeholder='email' className='border p-3 rounded-lg' id='email' onChange={handleChange} />
@@ -63,4 +59,4 @@ const Signup = () => {
   )
 }
 
-export default Signup
+export default SignUp

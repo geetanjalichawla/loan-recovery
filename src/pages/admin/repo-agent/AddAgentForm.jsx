@@ -64,7 +64,7 @@ const AddAgentForm = () => {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-    getValues,
+    // getValues,
     setValue,
     
   } = useForm({
@@ -113,7 +113,7 @@ const AddAgentForm = () => {
       .catch((error) => {
         console.error("Error fetching zones:", error);
       });
-  }, []);
+  }, [token]);
 
   const fetchStates = (zoneId) => {
     axios
@@ -182,7 +182,7 @@ const AddAgentForm = () => {
     }
   };
 
-  const value = getValues(); // check this if you want to use the values
+  // const value = getValues(); // check this if you want to use the values
   return (
     <>
       <form
@@ -560,7 +560,7 @@ const AddAgentForm = () => {
           )}
         </div>
 
-        <button disabled={isSubmitting}  className='w-full h-10 mt-36 bg-blue-500 text-white  rounded-md uppercase hover:opacity-95 disabled:opacity-85'>
+        <button disabled={isSubmitting}  className=' col-span-3 h-10  bg-blue-500 text-white  rounded-md uppercase hover:opacity-95 disabled:opacity-85 w-full'>
           {isSubmitting ? 'Please Wait...' : 'Submit'}
           </button>
 

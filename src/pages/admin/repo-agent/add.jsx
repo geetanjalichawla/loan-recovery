@@ -41,9 +41,9 @@ const validationSchema = z.object({
   city: z.string().min(1, { message: "city is Required." }).min(2).max(50),
   pincode: z
     .string()
-    .min(1, { message: "pincode is Required." })
-    .min(6, { message: "Enter a valid pincode." })
-    .max(6, { message: "Enter a valid pincode." }),
+    .min(1, { message: "pinCode is Required." })
+    .min(6, { message: "Enter a valid pinCode." })
+    .max(6, { message: "Enter a valid pinCode." }),
   username: z
     .string()
     .min(1, { message: "username is Required." })

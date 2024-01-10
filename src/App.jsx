@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 import toast, { Toaster } from "react-hot-toast";
 import AdminDashboard from "./pages/admin/Home/dashboard";
 import RepoAgentList from "./pages/admin/repo-agent/all";
+import GenerateRepoId from "./pages/admin/repo-agent/gentrate-id";
 
 const App = () => {
   const auth = localStorage.getItem("token");
@@ -56,6 +57,16 @@ const App = () => {
             <ProtectedRoute isAuthenticated={!!auth} redirect="/login">
               <Dashboard>
                 <RepoAgentList />
+              </Dashboard>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/repo-agent/generate-id-card"
+          element={
+            <ProtectedRoute isAuthenticated={!!auth} redirect="/login">
+              <Dashboard>
+                <GenerateRepoId />
               </Dashboard>
             </ProtectedRoute>
           }

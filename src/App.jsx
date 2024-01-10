@@ -10,6 +10,7 @@ import toast, { Toaster } from "react-hot-toast";
 import AdminDashboard from "./pages/admin/Home/dashboard";
 import RepoAgentList from "./pages/admin/repo-agent/all";
 import GenerateRepoId from "./pages/admin/repo-agent/gentrate-id";
+import IdCardList from "./pages/admin/repo-agent/id-all";
 
 const App = () => {
   const auth = localStorage.getItem("token");
@@ -67,6 +68,16 @@ const App = () => {
             <ProtectedRoute isAuthenticated={!!auth} redirect="/login">
               <Dashboard>
                 <GenerateRepoId />
+              </Dashboard>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/repo-agent/all-id-card"
+          element={
+            <ProtectedRoute isAuthenticated={!!auth} redirect="/login">
+              <Dashboard>
+                <IdCardList />
               </Dashboard>
             </ProtectedRoute>
           }

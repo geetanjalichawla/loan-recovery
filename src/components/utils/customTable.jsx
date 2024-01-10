@@ -39,13 +39,13 @@ function CustomTable({ columns, data, searchEnabled }) {
   const inputRef = useRef();
 
   return (
-    <div className="bg-white p-5 rounded-xl">
+    <div className="bg-white p-4 rounded-xl overflow-x-auto">
       {searchEnabled && (
         <div className="mb-4">
-          <input
+          <input className="bg-gray-50 border border-blue-600 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5   "
             ref={inputRef}
             type="text"
-            className="border-0.5 border-gray-300 px-3 py-2"
+            // className="border-0.5 border-gray-300 px-3 py-2"
             value={globalFilter || ""}
             onChange={(e) => {
               setGlobalFilter(e.target.value || undefined);
@@ -54,7 +54,8 @@ function CustomTable({ columns, data, searchEnabled }) {
           />
           {globalFilter && (
             <button
-              className="ml-2 text-gray-300 hover:text-gray-600"
+            className="p-2.5 ms-2 text-sm font-medium text-white bg-blue-700 rounded-lg border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300"
+              // className="ml-2 text-gray-300 hover:text-gray-600"
               onClick={() => {
                 setGlobalFilter("");
               }}
@@ -65,15 +66,18 @@ function CustomTable({ columns, data, searchEnabled }) {
         </div>
       )}
 
-      <table className="table-auto w-full">
-        <thead>
+      <table 
+      className="table-auto min-w-full text-sm text-left rtl:text-right text-black overflow-x-auto"
+      // className="table-auto w-full"
+      >
+        <thead className="text-xs text-black uppercase bg-gray-400 " >
           {headerGroups.map((headerGroup) => (
             <tr {...headerGroup.getHeaderGroupProps()} key={headerGroup.id}>
               {headerGroup.headers.map((column) => (
-                <th
+                <th 
                   key={column.id}
                   {...column.getHeaderProps(column.getSortByToggleProps())}
-                  className="px-4 py-2"
+                  className="px-6 py-3"
                 >
                   <div className="flex items-center gap-2">
                     <span>{column.render("Header")}</span>
@@ -110,11 +114,13 @@ function CustomTable({ columns, data, searchEnabled }) {
             ))}
           </tr>
         </thead>
-        <tbody {...getTableBodyProps()}>
+        <tbody className="overflow-x-auto"
+         {...getTableBodyProps()}>
           {page.map((row) => {
             prepareRow(row);
             return (
-              <tr key={row.id} {...row.getRowProps()}>
+              <tr  className="odd:bg-white even:bg-gray-400"
+              key={row.id} {...row.getRowProps()}>
                 {row.cells.map((cell) => (
                   <td key={cell.id} {...cell.getCellProps()} className="px-4 py-2">
                     {cell.render("Cell")}
@@ -126,42 +132,42 @@ function CustomTable({ columns, data, searchEnabled }) {
         </tbody>
       </table>
 
-      <div className="flex items-center justify-center mt-4 space-x-2">
+      <div className="flex mt-4 space-x-2">
         <select
           value={pageSize}
           onChange={(e) => setPageSize(Number(e.target.value))}
-          className="px-2 py-1 border border-gray-300"
+          className="px-2 py-1 border border-gray-300 w-[300px]"
         >
           <option value={10}>10 per page</option>
           <option value={20}>20 per page</option>
           <option value={50}>50 per page</option>
         </select>
-        <span className="text-sm">
+        <span className="text-sm text-black">
           Page <strong>{pageIndex + 1}</strong> of <strong>{pageCount}</strong>
         </span>
         <button
-          className="px-2 py-1 disabled:opacity-50"
+          className="px-2 py-1 disabled:opacity-50  text-black"
           onClick={() => gotoPage(0)}
           disabled={!canPreviousPage}
         >
           1
         </button>{" "}
         <button
-          className="px-2 py-1 disabled:opacity-50"
+          className="px-2 py-1 disabled:opacity-50  text-black"
           onClick={() => previousPage()}
           disabled={!canPreviousPage}
         >
           <FiChevronLeft />
         </button>{" "}
         <button
-          className="px-2 py-1 disabled:opacity-50"
+          className="px-2 py-1 disabled:opacity-50  text-black"
           onClick={() => nextPage()}
           disabled={!canNextPage}
         >
           <FiChevronRight />
         </button>{" "}
         <button
-          className="px-2 py-1 disabled:opacity-50"
+          className="px-2 py-1 disabled:opacity-50  text-black"
           onClick={() => gotoPage(pageCount - 1)}
           disabled={!canNextPage}
         >

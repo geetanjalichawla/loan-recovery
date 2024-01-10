@@ -72,15 +72,15 @@ const BankWiseData = () => {
   };
 
   return (
-    <form className="p-4 "
+    <form className="p-4 w-full h-auto grid grid-rows-3  grid-cols-2"
     onSubmit={handleSubmit(onSubmit)}>
-      <div className="">
-        <label className="block text-sm font-medium text-gray-600">
+      <div className="mb-2 col-start-1 col-span-1 row-start-1 row-span-1">
+        <label className="block text-sm font-medium text-black">
           Select Month
         </label>
         <select>
           <option value="" disabled>
-            Select City
+            Select month
           </option>
           <option value="January">January</option>
           <option value="February">February</option>
@@ -97,7 +97,7 @@ const BankWiseData = () => {
         </select>
       </div>
 
-      <div className="row-span-1 col-span-1 mb-4">
+      <div className="col-span-1 row-start-1 row-span-1 mb-2">
         <label className="block text-sm font-medium text-gray-600">
           Bank Name
         </label>
@@ -121,7 +121,7 @@ const BankWiseData = () => {
           )} */}
       </div>
 
-      <div>
+      <div className="mb-3 row-span-1 row-start-2">
         <label htmlFor="file">Choose file to upload</label>
         <input type="file" id="file" name="file" />
       </div>

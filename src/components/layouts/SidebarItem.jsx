@@ -1,9 +1,9 @@
+import PropTypes from "prop-types";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
-export default function SidebarItem({ item }) {
+const SidebarItem = ({ item }) => {
   const [open, setOpen] = useState(false);
-
 
   if (item.childrens) {
     return (
@@ -35,3 +35,22 @@ export default function SidebarItem({ item }) {
   }
 };
 
+// PropTypes
+SidebarItem.propTypes = {
+  item: PropTypes.shape({
+    icon: PropTypes.string,
+    title: PropTypes.string.isRequired,
+    path: PropTypes.string,
+    childrens: PropTypes.arrayOf(
+      PropTypes.shape({
+        // Recursively check for children PropTypes if needed
+        icon: PropTypes.string,
+        title: PropTypes.string.isRequired,
+        path: PropTypes.string,
+        childrens: PropTypes.array,
+      })
+    ),
+  }),
+};
+
+export default SidebarItem;

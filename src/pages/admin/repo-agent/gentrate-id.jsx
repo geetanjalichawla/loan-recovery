@@ -31,15 +31,13 @@ const RepoAgentIdCard = () => {
     resolver: zodResolver(schema),
   });
 
-  console.log(errors);
-  // token related
+
+  // eslint-disable-next-line no-unused-vars
   const [file, setFile] = useState(null);
   const values = getValues();
-  console.log({ values });
   const token = localStorage.getItem("token");
 
   const onSubmit = async (data) => {
-    console.log(data);
     try {
       // making api call to submit form data
       const response = await axios.post(`${BASE_URL}/create-id-card`, data, {
@@ -53,19 +51,12 @@ const RepoAgentIdCard = () => {
       // success toast
       toast.success("Form submitted successfully");
     } catch (error) {
-      //  api call error
-      console.error("API Request Error:", error);
-
       if (error.response) {
-        // if status code falls out of the range of 2xx
         console.error("Server responded with:", error.response.data);
-        // error message from the response
         const errorMessage =
           error.response.data.message || "Error form submitting";
-        // error toast showing the message
         toast.error(errorMessage);
       } else if (error.request) {
-        // if no response was received
         console.error("No response received:", error.request);
         toast.error("Server didn't respond. Please try again!");
       } else {

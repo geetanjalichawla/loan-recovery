@@ -183,6 +183,7 @@ CustomTable.propTypes = {
     PropTypes.shape({
       Header: PropTypes.string.isRequired,
       accessor: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
+      cell:PropTypes.any
     })
   ).isRequired,
   data: PropTypes.arrayOf(PropTypes.object).isRequired,

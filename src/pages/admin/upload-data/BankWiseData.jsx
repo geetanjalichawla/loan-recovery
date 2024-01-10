@@ -1,7 +1,9 @@
+import axios from "axios";
 import React from "react";
 import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import Select from "react-select";
+import { BASE_URL } from "../../../main";
 
 const BankWiseData = () => {
   const [banks, setBanks] = useState([]);

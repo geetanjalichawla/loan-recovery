@@ -49,5 +49,27 @@
                 "path": "/"
             }
         ]
+    },
+    {
+        "title": "Upload Data",
+        "icon": "bi  bi-person-badge-fill",
+        "childrens": [
+            {
+                "title": "Bank Wise Data",
+                "path": "/upload-data/bank-wise-data"
+            },
+            {
+                "title": "Combine Data",
+                "path": "/"
+            },
+            {
+                "title": "",
+                "path": "/"
+            },
+            {
+                "title": "",
+                "path": "/"
+            }
+        ]
     }
 ]

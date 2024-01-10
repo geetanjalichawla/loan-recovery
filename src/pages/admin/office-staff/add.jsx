@@ -5,36 +5,8 @@ import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import citiesData from "../../../Data/stateCityData (1).json";
 import { BASE_URL } from "../../../main";
-import Select from "react-select";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
-// Styles
-const styles = {
-    fileUpload: {
-      marginBottom: "20px",
-    },
-    label: {
-      display: "block",
-      marginBottom: "5px",
-      color: "#333",
-    },
-    fileInput: {
-      display: "none",
-    },
-    filePreview: {
-      display: "inline-block",
-      border: "1px solid #ccc",
-      padding: "10px",
-      marginTop: "5px",
-    },
-    previewImage: {
-      maxWidth: "100%",
-      maxHeight: "100px",
-      display: "block",
-      margin: "0 auto",
-    },
-  };
 
 const validationSchema = z.object({
   name: z.string().min(2).max(50),
@@ -185,7 +157,7 @@ const AddStaffForm = () => {
   };
 
 
-  const value = getValues(); // check this if you want to use the values
+//   const value = getValues(); // check this if you want to use the values
   return (
     <>
       <form

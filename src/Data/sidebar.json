@@ -37,16 +37,16 @@
                 "path": "/office-staff/all"
             },
             {
-                "title": "Repo Agent Details",
-                "path": "/repo-agent-details"
+                "title": "Combine Data",
+                "path": "/"
             },
             {
-                "title": "Generate ID Card",
-                "path": "/generate-id-card"
+                "title": "",
+                "path": "/"
             },
             {
-                "title": "ID Card Details",
-                "path": "/id-card-details"
+                "title": "",
+                "path": "/"
             }
         ]
     }

@@ -43,7 +43,7 @@ const App = () => {
           <Route
             path="/dashboard"
             element={
-              <ProtectedRoute isAuthenticated={!auth} redirect="/login">
+              <ProtectedRoute isAuthenticated={!!auth} redirect="/login">
 
                 <Dashboard>
                 <AddAgentForm />

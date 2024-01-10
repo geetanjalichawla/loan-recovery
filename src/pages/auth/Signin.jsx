@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import {
+  setError,
+  setMessage,
   signInFailure,
   signInStart,
   signInSuccess,
@@ -110,10 +112,10 @@ const Signin = () => {
       .then(res=>{
         const userToken = res.data.user.token;
         localStorage.setItem('token', userToken);
-        dispatch({type:"setMessage", payload:"logged in successfully"})
+        dispatch(setMessage("logged in successfully"))
       }).catch((err)=>{
         console.log(err.data.message)
-        dispatch({type:"setError", payload:err.data.message})
+        dispatch(setError(err.data.message))
         setApiError('Invalid email or password. Please try again.');
       })   
   };

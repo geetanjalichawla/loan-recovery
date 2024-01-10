@@ -5,19 +5,20 @@
         "childrens": [
             {
                 "title": "Add Repo Agent",
-                "path": "/add-repo-agent"
+                "path": "/repo-agent/add"
             },
             {
-                "title": "Repo Agent Details",
-                "path": "/repo-agent-details"
+                "title": "Show Repo Agent",
+                "path": "/repo-agent/all"
             },
             {
                 "title": "Generate ID Card",
-                "path": "/generate-id-card"
+                "path": "/repo-agent/generate-id-card"
             },
             {
                 "title": "ID Card Details",
-                "path": "/id-card-details"
+                "path": "/repo-agent/all-id-card"
+
             }
         ]
     },

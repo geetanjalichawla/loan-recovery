@@ -23,24 +23,24 @@
         ]
     },
     {
-        "title": "Repo Agent",
+        "title": "Upload Data",
         "icon": "bi bi-box-seam-fill",
         "childrens": [
             {
-                "title": "Add Repo Agent",
-                "path": "/add-repo-agent"
+                "title": "Bank Wise Data",
+                "path": "/upload-bank-wise-data"
             },
             {
-                "title": "Repo Agent Details",
-                "path": "/repo-agent-details"
+                "title": "Combine Data",
+                "path": "/"
             },
             {
-                "title": "Generate ID Card",
-                "path": "/generate-id-card"
+                "title": "",
+                "path": "/"
             },
             {
-                "title": "ID Card Details",
-                "path": "/id-card-details"
+                "title": "",
+                "path": "/"
             }
         ]
     }

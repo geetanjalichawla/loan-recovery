@@ -11,7 +11,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 const validationSchema = z.object({
   name: z.string().min(2).max(50),
-  mobile: z.number().min(10).max(10),
+  mobile: z.string().min(10).max(10),
   alternativeMobile: z.string().optional(),
   email: z
     .string()
@@ -294,7 +294,7 @@ const AddAgentForm = () => {
           <label className="block text-sm font-medium text-gray-600">
             Mobile
           </label>
-          <input type="tel"
+          <input 
             onChange={handleChange}
             {...register("mobile", { required: "Mobile is required" })}
             className={`mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring focus:border-blue-300 ${

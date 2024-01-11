@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import * as z from "zod";
@@ -8,17 +8,19 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const schema = z.object({
-  agentName: z.string().min(1, "agent name is required"),
-  fatherName: z.string().min(1, "father name is required"),
-  mobile: z.string().min(1, "mobile is required"),
-  addressLine1: z.string().min(1, "addressLine1 is required"),
-  addressLine2: z.string().min(1, "addressLine2 is required"),
-  validFrom: z.string().min(1, "validFrom is required"),
-  validTo: z.string().min(1, "validTo is required"),
-  status: z.string().min(1, "status is required"),
+  agentName: z.string().min(1, "Agent name is required"),
+  fatherName: z.string().min(1, "Father name is required"),
+  mobile: z.string().min(1, "Mobile is required"),
+  addressLine1: z.string().min(1, "Address Line 1 is required"),
+  addressLine2: z.string().optional(),
+  validFrom: z.string().min(1, "Valid From is required"),
+  validTo: z.string().min(1, "Valid To is required"),
+  status: z.string().min(1, "Status is required"),
   qrCode: z.string().optional(),
-  photo: typeof window === "undefined" ? z.any() : z.instanceof(File),
-  signature: typeof window === "undefined" ? z.any() : z.instanceof(File),
+  photo:   z.instanceof(FileList, "Photo is required")
+  .refine((files) => files.length > 0, { message: "Photo is required" }),
+  signature: z.instanceof(FileList, "Signature is required")
+  .refine((files) => files.length > 0, { message: "Signature is required" }),
 });
 const RepoAgentIdCard = () => {
   const {
@@ -27,20 +29,44 @@ const RepoAgentIdCard = () => {
     formState: { errors, isSubmitting },
     getValues,
     setValue,
+    reset,
   } = useForm({
     resolver: zodResolver(schema),
   });
+  const token = localStorage.getItem("token");
 
+
+  const [cardId, setCardId] = useState("");
+
+  const fetchStaffId = async () => {
+    try {
+      const response = await axios.get(`${BASE_URL}/cardId`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (response.data.success) {
+        setCardId(response.data.cardId);
+      }
+    } catch (error) {
+      console.error("Error fetching Staff ID:", error.message);
+    }
+  };
+  useEffect(() => {
+
+
+    fetchStaffId();
+  }, [ token]);
 
   // eslint-disable-next-line no-unused-vars
   const [file, setFile] = useState(null);
   const values = getValues();
-  const token = localStorage.getItem("token");
 
   const onSubmit = async (data) => {
     try {
       // making api call to submit form data
-      const response = await axios.post(`${BASE_URL}/create-id-card`, data, {
+      const response = await axios.post(`${BASE_URL}/create-id-card`, {...data, photo: data.photo[0], signature: data.signature[0]}, {
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type":"multipart/form-data"
@@ -49,6 +75,9 @@ const RepoAgentIdCard = () => {
       // handling api response
       console.log("API Response:", response.data);
       // success toast
+      reset();
+      fetchStaffId();
+      
       toast.success("Form submitted successfully");
     } catch (error) {
       if (error.response) {
@@ -71,18 +100,20 @@ const RepoAgentIdCard = () => {
   const onGenerateQr = async () => {
     setGenQr(true);
     axios
-      .get(`${BASE_URL}/generate-qr/IC0003`, {
+      .post(`${BASE_URL}/generate-qr/${cardId}`, null,{
         headers: {
           Authorization: `Bearer ${token}`,
         },
       })
       .then((response) => {
         console.log(response);
+        setValue('qrCode',response.data.qrCodeImage)
+        
         setGenQr(false);
       });
   };
   const handleFileChange = (e) => {
-    const file = e.target.files[0];
+    const file = e.target.files;
     console.log({ file });
     setFile(file);
     // setValue("file", URL.createObjectURL(file));
@@ -90,7 +121,7 @@ const RepoAgentIdCard = () => {
     console.log({ values });
   };
   const handleSignatureChange = (e) => {
-    const file = e.target.files[0];
+    const file = e.target.files;
     console.log({ file });
     setFile(file)
     setValue("signature", file);
@@ -108,7 +139,7 @@ const RepoAgentIdCard = () => {
           <label className="block text-sm font-medium text-gray-600">Id</label>
           <input
             type="id"
-            value={"1002"}
+            value={cardId}
             disabled
             className={`mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring focus:border-blue-300 `}
           />
@@ -243,13 +274,15 @@ const RepoAgentIdCard = () => {
           <label className="block text-sm font-medium text-gray-600">
             status
           </label>
-          <input
-            type="text"
+          <select
             {...register("status", { required: "status is required" })}
             className={`mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring focus:border-blue-300 ${
               errors.status ? "border-red-500" : ""
             }`}
-          />
+          >
+            <option value={'active'}>Active</option>
+            <option value={'inactive'}>InActive</option>
+          </select>
           {errors.status && (
             <span className="text-red-500 text-xs">
               {errors.status.message}
@@ -270,14 +303,13 @@ const RepoAgentIdCard = () => {
           <img
             className="w-full aspect-square bg-black border border-black "
             src={
-              "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAKQAAACkCAYAAAAZtYVBAAAAAklEQVR4AewaftIAAAYVSURBVO3BQQ4kuRHAQFLo/3+Znpt1ElCo7lmtnRH2B2NcYjHGRRZjXGQxxkUWY1xkMcZFFmNcZDHGRRZjXGQxxkUWY1xkMcZFFmNcZDHGRRZjXGQxxkU+vKTyN1XsVJ6oOFH5poqdyjdVnKj8TRVvLMa4yGKMiyzGuMiHL6v4JpWTihOVncquYlfxhMqu4qTiCZVvqvgmlW9ajHGRxRgXWYxxkQ8/pvJExRMqu4qTihOVXcVJxU5lV/GEyknFN6k8UfFLizEushjjIosxLvLhX65ip/KEyq7ijYpvqtipnFT8my3GuMhijIssxrjIh/8xFTuVncqJyq5ip7Kr2KnsKnYqu4rxX4sxLrIY4yKLMS7y4ccqfkllV3FSsVM5UXlD5Q2Vk4o3Km6yGOMiizEushjjIh++TOXfrGKnsqvYqewqdiq7ip3KrmKnsqvYqewqTlRuthjjIosxLrIY4yIfXqr4J1XsVN5Q2VXsVJ6o2KmcqHxTxb/JYoyLLMa4yGKMi9gfvKCyq9ip7CqeUDmpOFH5poonVHYVO5VdxYnKScWJyq7iRGVXsVPZVbyxGOMiizEushjjIvYHX6Syq9ip7Cq+SWVXsVPZVexUTipOVJ6oOFE5qdipfFPFTmVX8U2LMS6yGOMiizEuYn/wgsqu4kTlpGKnsqvYqewqfknlpOJE5Zcqdiq7ihOVNyreWIxxkcUYF1mMcZEPL1WcqOwqnqg4qdipPFGxU9lVPKGyq3iiYqfyTSq7ipOKncovLca4yGKMiyzGuMiHL1M5UXmj4qRip/JLFTuVJyp2Kk9U7FROKnYqu4p/0mKMiyzGuMhijIvYH/yQyhsVO5UnKk5UdhU3U/mlihOVk4o3FmNcZDHGRRZjXOTDSyq7ipOKJ1R2FTuVE5WTihOVk4onVHYVO5WTip3KGxU7lV3FrmKn8k2LMS6yGOMiizEuYn/wgsqu4kTlpOJE5aRip7Kr2KmcVDyhsqv4JpVdxYnKruJE5aTilxZjXGQxxkUWY1zkw0sVO5UnKk5U/qaKncpJxa5ip/I3qZyo7Cp2FScqu4pvWoxxkcUYF1mMcRH7gxdUTipOVE4qTlROKk5Uvqlip3JS8YTKScWJyhMVJyq7ijcWY1xkMcZFFmNc5MOXVXyTyq7ilyp2KruKncpO5aTiROWJihOVXcWJyk5lV/FLizEushjjIosxLvLhx1R2FScVJypvqOwqnlDZVZyoPFGxU9lVvKGyqzip2Kn80mKMiyzGuMhijIvYH3yRyknFTuWJip3KrmKnsqt4QuX/ScUTKruKNxZjXGQxxkUWY1zkw49VnFTsVHYVJxUnFW9UnKjsKnYqu4qdyq7iCZWTip3KrmKnsqv4mxZjXGQxxkUWY1zkw0sqJypvqOwqTlROKnYqu4pvqnhC5ZtUdhU3W4xxkcUYF1mMcZEPL1WcqJxUvKGyq9ipfJPKGyonFScqT1TsVHYVb1R802KMiyzGuMhijIvYH7ygclKxU3mj4kTlpOJE5aRip3JScaJyk4onVHYVbyzGuMhijIssxrjIh5cqnqj4JpWTihOVXcVO5Q2VXcVJxYnKScUTKk+o/NJijIssxrjIYoyLfHhJ5W+qOKk4UXlD5aTiRGVXsVM5qdipnKjsKk5UTip+aTHGRRZjXGQxxkU+fFnFN6mcVOxU/kkqu4onKr6p4omKJ1R2FW8sxrjIYoyLLMa4yIcfU3mi4psqdionKk9U7FROKnYqT1ScqLyhsqvYqfzSYoyLLMa4yGKMi3z4H1OxU9lV7FROKp6oeKLiCZWTip3KScVO5aTilxZjXGQxxkUWY1zkw7+cyknFScWJyknFEyq7ip3KScVOZafySyonFW8sxrjIYoyLLMa4yIcfq/ilip3KTmVXsVPZVZxUnKjsKnYVJxXfVPFNFb+0GOMiizEushjjIh++TOVvUtlV7FSeUDlROak4UTmp2Kk8UXGiclKxU9lV7FR2FW8sxrjIYoyLLMa4iP3BGJdYjHGRxRgXWYxxkcUYF1mMcZHFGBdZjHGRxRgXWYxxkcUYF1mMcZHFGBdZjHGRxRgXWYxxkf8ABxj/OjpOvBkAAAAASUVORK5CYII="
+              values.qrCode
             }
           />
         </div>
         <div className="p-4">
           <input
             type="file"
-            // {...register("photo", { required: "Photo is required" })}
             onChange={(e) => handleFileChange(e)}
             className={`mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring focus:border-blue-300 ${
               errors.photo ? "border-red-500" : ""
@@ -290,13 +322,13 @@ const RepoAgentIdCard = () => {
           <h5>Photo</h5>
           <img
             className="w-full aspect-square bg-white border border-black "
-            src={values.photo && URL.createObjectURL(values.photo)}
+            src={values.photo  && values.photo[0]&& URL.createObjectURL(values.photo[0])}
           />
         </div>
+
         <div className="p-4">
           <input
             type="file"
-            // {...register("photo", { required: "Photo is required" })}
             onChange={(e) => handleSignatureChange(e)}
             className={`mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring focus:border-blue-300 ${
               errors?.photo ? "border-red-500" : ""
@@ -306,16 +338,17 @@ const RepoAgentIdCard = () => {
             <span className="text-red-500 text-xs">{errors.signature.message}</span>
           )}
 
-          <h5>signature</h5>
+          <h5>Signature</h5>
           <img
             className="w-full aspect-square bg-white border border-black "
-            src={values.signature && URL.createObjectURL(values.signature)}
+            src={values.signature  && values.signature[0]&& URL.createObjectURL(values.signature[0])}
           />
         </div>
+
         <button
           disabled={isSubmitting}
           type="submit"
-          className=" col-span-3 h-10 btn bg-blue-500 text-white  rounded-md uppercase hover:opacity-95 disabled:opacity-85 w-full"
+          className="h-10 btn bg-blue-500 text-white  rounded-md uppercase hover:opacity-95 disabled:opacity-85 w-full"
         >
           {isSubmitting ? "Please Wait..." : "Submit"}
         </button>

@@ -393,10 +393,7 @@ const AddAgentForm = () => {
           )}
         </div>
 
-        {/* third row */}
-
         {/* Address Line 1 */}
-
         <div className="row-span-1 col-span-1 mb-4">
           <label className="block text-sm font-medium text-gray-600">
             Address Line 1
@@ -417,7 +414,6 @@ const AddAgentForm = () => {
         </div>
 
         {/* Address Line 2 */}
-
         <div className="mb-4">
           <label className="block text-sm font-medium text-gray-600">
             Address Line 2
@@ -437,8 +433,6 @@ const AddAgentForm = () => {
           )}
         </div>
 
-        {/* fourth row */}
-        {/* state */}
 
         <div className="mb-4">
           <label className="block text-sm font-medium text-gray-600">
@@ -491,7 +485,7 @@ const AddAgentForm = () => {
             ))}
           </select>
           {errors.city && (
-            <span className="text-red-500 text-xs">{errors.City.message}</span>
+            <span className="text-red-500 text-xs">{errors.city.message}</span>
           )}
         </div>
 
@@ -516,10 +510,6 @@ const AddAgentForm = () => {
             </span>
           )}
         </div>
-
-        {/* sixth row */}
-
-        {/* username */}
 
         <div className="mb-4">
           <label className="block text-sm font-medium text-gray-600">

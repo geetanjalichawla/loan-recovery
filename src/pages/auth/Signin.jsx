@@ -80,18 +80,17 @@ const Signin = () => {
       className="w-full p-2 mt-4 bg-teal-500 text-white rounded-md hover:bg-teal-600 focus:outline-none focus:ring focus:border-blue-300"
       disabled={isSubmitting}
     >
-      {isSubmitting ? 'signing in...' : 'Sign In'}
+      {isSubmitting ? 'Signing in...' : 'Sign In'}
     </button>
   </form>
 
   <div className="flex justify-between gap-2 mt-5">
         <div className=" font-semibold">
-          <span className="text-black" >Don't have an account?</span>
+          <span className="text-black" >Don&apos;t have an account?</span>
           <Link to="/register">
             <span className="text-blue-700"> Register</span>
           </Link>
         </div>
-        {/* <p className="text-red-700 font-semibold">Forgot password ?</p> */}
       </div>
 
 </div>

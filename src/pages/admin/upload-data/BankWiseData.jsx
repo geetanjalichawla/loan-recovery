@@ -8,21 +8,10 @@ import "react-toastify/dist/ReactToastify.css";
 import { z } from 'zod';
 import { zodResolver } from "@hookform/resolvers/zod";
 
-const allowedFileTypes = ['application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'application/pdf'];
-
-const isFileValid = (file) => {
-  return allowedFileTypes.includes(file.type);
-};
-
 const validationSchema = z.object({
   selectedMonth: z.string().min(1, 'Select month is required'),
   bankName: z.string().min(1, 'Select bank is required'),
-  file: z.object({
-    data: z.instanceof(File),
-    name: z.string().refine((value) => isFileValid(value), {
-      message: 'Invalid file type. Please upload a docx, doc, or pdf file.',
-    }),
-  }),
+  doc : typeof window === "undefined" ? z.any() : z.instanceof(File)
 });
 
 const monthsArray = [
@@ -52,6 +41,8 @@ const BankWiseData = () => {
   } = useForm({
     resolver: zodResolver(validationSchema),
   });
+
+  const [file, setFile] = useState(null);
 
   const token = localStorage.getItem("token");
 
@@ -101,6 +92,16 @@ const BankWiseData = () => {
     }
   };
 
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    console.log({ file });
+    setFile(file);
+    // setValue("doc", URL.createObjectURL(file));
+    setValue("doc", file);
+    console.log({ values });
+  };
+
+
   return (
     <form
       className="p-4 grid grid-cols-2 gap-4"
@@ -113,7 +114,7 @@ const BankWiseData = () => {
         </label>
         <Select
           onChange={(selectedOption) => {
-            setValue("month", selectedOption.value);
+            setValue("selectedMonth", selectedOption.value);
           }}
           options={monthsArray.map((month) => ({
             value: month.value,
@@ -164,12 +165,13 @@ const BankWiseData = () => {
           type="file"
           id="file"
           name="file"
-          accept='.doc, .docx, .pdf'
+          accept='.xls, .xlsm, .xlsx, .csv, .txt'
           className="mt-1 p-2 border rounded-md w-full"
+          onChange={(e) => handleFileChange(e)}
         />
-        {errors.file && (
+        {errors.doc && (
           <span className="text-red-500 text-xs">
-            {errors.file.message}
+            {errors.doc.message}
           </span>
         )}
       </div>

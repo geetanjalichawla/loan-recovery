@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useState} from 'react'
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import Select from "react-select";
@@ -8,20 +8,9 @@ import "react-toastify/dist/ReactToastify.css";
 import { z } from 'zod';
 import { zodResolver } from "@hookform/resolvers/zod";
 
-const allowedFileTypes = ['application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'application/pdf'];
-
-const isFileValid = (file) => {
-  return allowedFileTypes.includes(file.type);
-};
-
 const validationSchema = z.object({
   selectedMonth: z.string().min(1, 'Select month is required'),
-  file: z.object({
-    data: z.instanceof(File),
-    name: z.string().refine((value) => isFileValid(value), {
-      message: 'Invalid file type. Please upload a docx, doc, or pdf file.',
-    }),
-  }),
+  doc : typeof window === "undefined" ? z.any() : z.instanceof(File)
 });
 
 const monthsArray = [
@@ -49,6 +38,8 @@ const CombineData = () => {
       } = useForm({
         resolver: zodResolver(validationSchema),
       });
+
+      const [file, setFile] = useState(null);
 
       const token = localStorage.getItem("token");
 
@@ -83,6 +74,16 @@ const CombineData = () => {
         }
     };
 
+    const handleFileChange = (e) => {
+      const file = e.target.files[0];
+      console.log({ file });
+      setFile(file);
+      setValue("doc", URL.createObjectURL(file));
+      setValue("doc", file);
+      console.log({ values });
+    };
+
+
 
   return (
     <form 
@@ -106,8 +107,6 @@ const CombineData = () => {
             errors.selectedMonth ? "border-red-500" : ""
           }`}
         />
-
-        
         {errors.selectedMonth && (
           <span className="text-red-500 text-xs">
             {errors.selectedMonth.message}
@@ -115,7 +114,7 @@ const CombineData = () => {
         )}
       </div>
 
-      <div className="my-4 col-span-2">
+      <div className="my-4">
         <label htmlFor="file" className="block text-sm font-medium text-black">
           Choose file to upload
           <span className="text-red-600">*</span>
@@ -124,15 +123,13 @@ const CombineData = () => {
           type="file"
           id="file"
           name="file"
-          accept='.doc, .docx, .pdf'
-         
-          // className="mt-1 p-2 border rounded-md w-full"
-          className={`mt-1 p-2 border rounded-md w-full ${errors.file ? 'border-red-500' : ''}`}
-          {...register('file', { required: 'File is required' })}
+          accept='.xls, .xlsm, .xlsx, .csv, .txt'
+          className="mt-1 p-2 border rounded-md w-full"
+          onChange={(e) => handleFileChange(e)}
         />
-        {errors.file && (
+        {errors.doc && (
           <span className="text-red-500 text-xs">
-            {errors.file.message}
+            {errors.doc.message}
           </span>
         )}
       </div>

@@ -15,6 +15,7 @@ import OfficeStaffList from "./pages/admin/office-staff/all";
 import BankWiseData from "./pages/admin/upload-data/BankWiseData";
 import CombineData from "./pages/admin/upload-data/CombineData";
 import UploadFilesData from "./pages/admin/upload-data/UploadFilesData";
+import AddStaffForm from "./pages/admin/office-staff/add";
 
 const App = () => {
   const auth = localStorage.getItem("token");
@@ -92,6 +93,16 @@ const App = () => {
             <ProtectedRoute isAuthenticated={!!auth} redirect="/login">
               <Dashboard>
                 <OfficeStaffList />
+              </Dashboard>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/office-staff/add"
+          element={
+            <ProtectedRoute isAuthenticated={!!auth} redirect="/login">
+              <Dashboard>
+                <AddStaffForm />
               </Dashboard>
             </ProtectedRoute>
           }

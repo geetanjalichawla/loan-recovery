@@ -37,8 +37,8 @@
                 "path": "/office-staff/all"
             },
             {
-                "title": "Combine Data",
-                "path": "/"
+                "title": "Add Office Staff",
+                "path": "/office-staff/add"
             },
             {
                 "title": "",

@@ -8,103 +8,107 @@ import { BASE_URL } from "../../../main";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-const validationSchema = z.object({
-  name: z.string().min(2).max(50),
-  mobile: z.string().min(10).max(10),
+
+const initialFormData = {
+  name: "",
+  mobile: "",
+  alternativeMobile: "",
+  email: "",
+  panCard: "",
+  aadharCard: "",
+  addressLine1: "",
+  addressLine2: "",
+  city: "",
+  pincode: "",
+  username: "",
+  password: "",
+  photo: null, // or []
+  signature: null, // or []
+  aadhar: null, // or []
+  pancard: null, // or []
+  cheque: null, // or []
+  licence: null,
+  state:'',
+};
+
+const officeStaffSchema = z.object({
+  name: z.string().min(1, "Name is required"),
+  mobile: z.string().min(1, "Mobile is required"),
   alternativeMobile: z.string().optional(),
-  email: z
-    .string()
-    .min(1, { message: "Email is Required." })
-    .email("This is not a valid email."),
-  panCard: z
-    .string()
-    .min(1, { message: "Pan Card is Required." })
-    .min(8)
-    .max(20),
-  aadharCard: z
-    .string()
-    .min(1, { message: "Aadhar Card is Required." })
-    .min(12)
-    .max(20),
-  addressLine1: z
-    .string()
-    .min(1, { message: "Address Line is Required." })
-    .min(2)
-    .max(100),
-  addressLine2: z
-    .string()
-    .min(1, { message: "Address Line 2 is Required." })
-    .max(100)
-    .optional(),
-  state: z.string().min(1, { message: "state is Required." }).min(2).max(50),
-  city: z.string().min(1, { message: "city is Required." }).min(2).max(50),
-  pincode: z
-    .string()
-    .min(1, { message: "pincode is Required." })
-    .min(6, { message: "Enter a valid pincode." })
-    .max(6, { message: "Enter a valid pincode." }),
-  username: z
-    .string()
-    .min(1, { message: "username is Required." })
-    .min(4)
-    .max(20),
-  password: z
-    .string()
-    .min(1, { message: "password is Required." })
-    .min(8)
-    .max(20),
-  status: z
-    .string()
+  email: z.string().email().optional(),
+  panCard: z.string().min(1, "PAN Card is required"),
+  aadharCard: z.string().min(1, "Aadhar Card is required"),
+  addressLine1: z.string().min(1, "Address Line 1 is required"),
+  addressLine2: z.string().optional(),
+  city: z.string().min(1, "City is required"),
+  state: z.string().min(1, "State is required"),
+  pincode: z.string().min(1, "Pincode is required"),
+  username: z.string().min(1, "Username is required"),
+  password: z.string().min(1, "Password is required"),
+  photo: z
+    .instanceof(FileList, "Photo is required")
+    .refine((files) => files.length > 0, { message: "Photo is required" }),
+  signature: z
+    .instanceof(FileList, "Signature is required")
+    .refine((files) => files.length > 0, { message: "Signature is required" }),
+  aadhar: z
+    .instanceof(FileList, "Aadhar card is required")
+    .refine((files) => files.length > 0, {
+      message: "Aadhar card is required",
+    }),
+  pancard: z
+    .instanceof(FileList, "Pan card is required")
+    .refine((files) => files.length > 0, { message: "Pan card is required" }),
+  cheque: z
+    .instanceof(FileList, "Cheque is required")
+    .refine((files) => files.length > 0, { message: "Cheque is required" }),
+  licence: z
+    .instanceof(FileList, "License is required")
+    .refine((files) => files.length > 0, { message: "License is required" }),
 });
 
 const AddStaffForm = () => {
-    const {
-        register,
-        handleSubmit,
-        formState: { errors, isSubmitting },
-        getValues,
-        setValue,
-      } = useForm({
-        resolver: zodResolver(validationSchema),
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+    setValue,
+    reset,
+    getValues,
+  } = useForm({
+    resolver: zodResolver(officeStaffSchema),
+    defaultValues: initialFormData,
+  });
+
+  const [staffId, setStaffId] = useState("");
+  const [change, setChange] = useState("");
+
+  // token related
+  const token = localStorage.getItem("token");
+
+  const [States, SetStates] = useState([]);
+  const [Cities, SetCities] = useState([]);
+  const [selectedState, setSelectedState] = useState("");
+
+  const fetchStaffId = async () => {
+    try {
+      const response = await axios.get(`${BASE_URL}/office-stafId`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       });
 
-      const [formData, setFormData] = useState({});
-      const [staffId, setStaffId] = useState("");
-
-      const handleChange = (e) => {
-        setFormData({
-          ...formData,
-          [e.target.name]: e.target.value,
-        });
-      };
-
-      // token related
-      const token = localStorage.getItem("token");
-
-      const [States, SetStates] = useState([]);
-      const [Cities, SetCities] = useState([]);
-      const [selectedState, setSelectedState] = useState("");
+      if (response.data.success) {
+        setStaffId(response.data.stafId);
+      }
+    } catch (error) {
+      console.error("Error fetching Staff ID:", error.message);
+    }
+  };
 
   useEffect(() => {
-    const fetchStaffId = async () => {
-      try {
-        const response = await axios.get(
-            `${BASE_URL}/office-stafId`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
 
-        if (response.data.success) {
-          setStaffId(response.data.stafId);
-        }
-      } catch (error) {
-        console.error("Error fetching Staff ID:", error.message);
-      }
-    };
-
+    
     fetchStaffId();
   }, [token]);
 
@@ -118,20 +122,33 @@ const AddStaffForm = () => {
     }
   }, [selectedState]);
 
-
   const onSubmit = async (data) => {
     try {
       // making api call to submit form data
-      const response = await axios.post(`${BASE_URL}/create-staf`, data, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "multipart/form-data", // Make sure to set the content type
+      const response = await axios.post(
+        `${BASE_URL}/create-staf`,
+        {
+          ...data,
+          photo: data.photo[0],
+          signature: data.signature[0],
+          aadhar: data.aadhar[0],
+          pancard: data.pancard[0],
+          cheque: data.cheque[0],
+          licence: data.licence[0],
         },
-      });
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "multipart/form-data", // Make sure to set the content type
+          },
+        }
+      );
 
       // handling api response
       console.log("API Response:", response.data);
       // success toast
+      reset();
+      fetchStaffId();
       toast.success("Form submitted successfully");
     } catch (error) {
       //  api call error
@@ -141,7 +158,8 @@ const AddStaffForm = () => {
         // if status code falls out of the range of 2xx
         console.error("Server responded with:", error.response.data);
         // error message from the response
-        const errorMessage = error.response.data.message || "Error form submitting";
+        const errorMessage =
+          error.response.data.message || "Error form submitting";
         // error toast showing the message
         toast.error(errorMessage);
       } else if (error.request) {
@@ -156,200 +174,179 @@ const AddStaffForm = () => {
     }
   };
 
-
-//   const value = getValues(); // check this if you want to use the values
+  const value = getValues(); // check this if you want to use the values
+  console.log({ value });
   return (
     <>
       <form
         className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
         onSubmit={handleSubmit(onSubmit)}
       >
+        <>
 
-
-        {/* first row */}
-        {/* name */}
-
-        {/* Staff ID */}
-        <div className="row-span-1 col-span-1 mb-4">
-          <label className="block text-sm font-medium text-gray-600">
-            Staff Id
-          </label>
-          <input
+                  {/* Staff Name */}
+          <div className="row-span-1 col-span-1 mb-4">
+            <label className="block text-sm font-medium text-gray-600">
+             Staff Id
+            </label>
+            <input
+            disabled
             value={staffId}
-            readOnly
-            className="mt-1 p-2 w-full border rounded-md bg-gray-200"
-          />
-        </div>
+              className={`mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring focus:border-blue-300 ${
+                errors.name ? "border-red-500" : ""
+              }`}
+            />
+            {errors.name && (
+              <span className="text-red-500 text-xs">
+                {errors.name.message}
+              </span>
+            )}
+          </div>
 
-        <div className="row-span-1 col-span-1 mb-4">
-          <label className="block text-sm font-medium text-gray-600">
-           Staff Name
-          </label>
-          <input
-            onChange={handleChange}
-            {...register("name", { required: "Name is required" })}
-            className={`mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring focus:border-blue-300 ${
-              errors.name ? "border-red-500" : ""
-            }`}
-          />
-          {errors.name && (
-            <span className="text-red-500 text-xs">{errors.name.message}</span>
-          )}
-        </div>
+          {/* Staff Name */}
+          <div className="row-span-1 col-span-1 mb-4">
+            <label className="block text-sm font-medium text-gray-600">
+              Staff Name
+            </label>
+            <input
+              {...register("name", { required: "Name is required" })}
+              className={`mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring focus:border-blue-300 ${
+                errors.name ? "border-red-500" : ""
+              }`}
+            />
+            {errors.name && (
+              <span className="text-red-500 text-xs">
+                {errors.name.message}
+              </span>
+            )}
+          </div>
 
-        {/* mobile */}
+          {/* Mobile */}
+          <div className="row-span-1 col-span-1 mb-4">
+            <label className="block text-sm font-medium text-gray-600">
+              Mobile
+            </label>
+            <input
+              {...register("mobile", { required: "Mobile is required" })}
+              className={`mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring focus:border-blue-300 ${
+                errors.mobile ? "border-red-500" : ""
+              }`}
+            />
+            {errors.mobile && (
+              <span className="text-red-500 text-xs">
+                {errors.mobile.message}
+              </span>
+            )}
+          </div>
 
-        <div className="row-span-1 col-span-1 mb-4">
-          <label className="block text-sm font-medium text-gray-600">
-            Mobile 1
-          </label>
-          <input
-            onChange={handleChange}
-            {...register("mobile", { required: "Mobile is required" })}
-            className={`mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring focus:border-blue-300 ${
-              errors.mobile ? "border-red-500" : ""
-            }`}
-          />
-          {errors.mobile && (
-            <span className="text-red-500 text-xs">
-              {errors.mobile.message}
-            </span>
-          )}
-        </div>
+          {/* Alternative Mobile */}
+          <div className="row-span-1 col-span-1 mb-4">
+            <label className="block text-sm font-medium text-gray-600">
+              Alternative Mobile
+            </label>
+            <input
+              {...register("alternativeMobile")}
+              className={`mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring focus:border-blue-300 ${
+                errors.alternativeMobile ? "border-red-500" : ""
+              }`}
+            />
+            {errors.alternativeMobile && (
+              <span className="text-red-500 text-xs">
+                {errors.alternativeMobile.message}
+              </span>
+            )}
+          </div>
 
-        {/* Alternative Mobile */}
+          {/* Email */}
+          <div className="row-span-1 col-span-1 mb-4">
+            <label className="block text-sm font-medium text-gray-600">
+              Email
+            </label>
+            <input
+              {...register("email")}
+              className={`mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring focus:border-blue-300 ${
+                errors.email ? "border-red-500" : ""
+              }`}
+            />
+            {errors.email && (
+              <span className="text-red-500 text-xs">
+                {errors.email.message}
+              </span>
+            )}
+          </div>
 
-        <div className="row-span-1 col-span-1 mb-4">
-          <label className="block text-sm font-medium text-gray-600">
-            Mobile 2
-          </label>
-          <input
-            onChange={handleChange}
-            {...register("alternativeMobile", {
-              required: "Alternative Mobile is required",
-            })}
-            name="alternativeMobile"
-            className={`mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring focus:border-blue-300 ${
-              errors.alternativeMobile ? "border-red-500" : ""
-            }`}
-          />
-          {errors.alternativeMobile && (
-            <span className="text-red-500 text-xs">
-              {errors.alternativeMobile.message}
-            </span>
-          )}
-        </div>
+          {/* PAN Card */}
+          <div className="row-span-1 col-span-1 mb-4">
+            <label className="block text-sm font-medium text-gray-600">
+              PAN Card
+            </label>
+            <input
+              {...register("panCard", { required: "PAN Card is required" })}
+              className={`mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring focus:border-blue-300 ${
+                errors.panCard ? "border-red-500" : ""
+              }`}
+            />
+            {errors.panCard && (
+              <span className="text-red-500 text-xs">
+                {errors.panCard.message}
+              </span>
+            )}
+          </div>
 
-        {/* second row */}
-        {/* email */}
+          {/* Aadhar Card */}
+          <div className="row-span-1 col-span-1 mb-4">
+            <label className="block text-sm font-medium text-gray-600">
+              Aadhar Card
+            </label>
+            <input
+              {...register("aadharCard", {
+                required: "Aadhar Card is required",
+              })}
+              className={`mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring focus:border-blue-300 ${
+                errors.aadharCard ? "border-red-500" : ""
+              }`}
+            />
+            {errors.aadharCard && (
+              <span className="text-red-500 text-xs">
+                {errors.aadharCard.message}
+              </span>
+            )}
+          </div>
 
-        <div className="row-span-1 col-span-1 mb-4">
-          <label className="block text-sm font-medium text-gray-600">
-            Mail Id
-          </label>
-          <input
-            onChange={handleChange}
-            name="email"
-            {...register("email", { required: "Email is required" })}
-            className={`mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring focus:border-blue-300 ${
-              errors.email ? "border-red-500" : ""
-            }`}
-          />
-          {errors.email && (
-            <span className="text-red-500 text-xs">{errors.email.message}</span>
-          )}
-        </div>
+          {/* Address Line 1 */}
+          <div className="row-span-1 col-span-1  lg:col-span-2   mb-4">
+            <label className="block text-sm font-medium text-gray-600">
+              Address Line 1
+            </label>
+            <input
+              {...register("addressLine1", {
+                required: "Address Line 1 is required",
+              })}
+              className={`mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring focus:border-blue-300 ${
+                errors.addressLine1 ? "border-red-500" : ""
+              }`}
+            />
+            {errors.addressLine1 && (
+              <span className="text-red-500 text-xs">
+                {errors.addressLine1.message}
+              </span>
+            )}
+          </div>
 
-        {/* PAN Card */}
+          {/* Address Line 2 */}
+          <div className="row-span-1 col-span-1 md:col-span-2 lg:col-span-3 mb-4">
+            <label className="block text-sm font-medium text-gray-600">
+              Address Line 2
+            </label>
+            <input
+              {...register("addressLine2")}
+              className={`mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring focus:border-blue-300 ${
+                errors.addressLine2 ? "border-red-500" : ""
+              }`}
+            />
+          </div>
 
-        <div className="row-span-1 col-span-1 mb-4">
-          <label className="block text-sm font-medium text-gray-600">
-            Pan Card No
-          </label>
-          <input
-            onChange={handleChange}
-            name="email"
-            {...register("panCard", { required: "Pan Card is required" })}
-            className={`mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring focus:border-blue-300 ${
-              errors.panCard ? "border-red-500" : ""
-            }`}
-          />
-          {errors.panCard && (
-            <span className="text-red-500 text-xs">
-              {errors.panCard.message}
-            </span>
-          )}
-        </div>
-
-        {/* Aadhar Card */}
-
-        <div className="row-span-1 col-span-1 mb-4">
-          <label className="block text-sm font-medium text-gray-600">
-            Aadhar Card No
-          </label>
-          <input
-            onChange={handleChange}
-            name="aadharCard"
-            {...register("aadharCard", { required: "Aadhar Card is required" })}
-            className={`mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring focus:border-blue-300 ${
-              errors.aadharCard ? "border-red-500" : ""
-            }`}
-          />
-          {errors.aadharCard && (
-            <span className="text-red-500 text-xs">
-              {errors.aadharCard.message}
-            </span>
-          )}
-        </div>
-
-        {/* third row */}
-
-        {/* Address Line 1 */}
-
-        <div className="row-span-1 col-span-1 mb-4">
-          <label className="block text-sm font-medium text-gray-600">
-            Address Line 1
-          </label>
-          <input
-            onChange={handleChange}
-            name="addressLine1"
-            {...register("addressLine1", { required: "Address is required" })}
-            className={`mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring focus:border-blue-300 ${
-              errors.addressLine1 ? "border-red-500" : ""
-            }`}
-          />
-          {errors.addressLine1 && (
-            <span className="text-red-500 text-xs">
-              {errors.addressLine1.message}
-            </span>
-          )}
-        </div>
-
-        {/* Address Line 2 */}
-
-        <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-600">
-            Address Line 2
-          </label>
-          <input
-            onChange={handleChange}
-            name="addressLine1"
-            {...register("addressLine2")}
-            className={`mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring focus:border-blue-300 ${
-              errors.addressLine2 ? "border-red-500" : ""
-            }`}
-          />
-          {errors.addressLine2 && (
-            <span className="text-red-500 text-xs">
-              {errors.addressLine2.message}
-            </span>
-          )}
-        </div>
-
-        {/* fourth row */}
-        {/* state */}
-
-        <div className="mb-4">
+          <div className="mb-4">
           <label className="block text-sm font-medium text-gray-600">
             State
           </label>
@@ -367,7 +364,7 @@ const AddStaffForm = () => {
             <option value="" disabled>
               Select State
             </option>
-            {States.map((State) => (
+            {Object.keys(citiesData).map((State) => (
               <option key={State} value={State}>
                 {State}
               </option>
@@ -377,8 +374,6 @@ const AddStaffForm = () => {
             <span className="text-red-500 text-xs">{errors.State.message}</span>
           )}
         </div>
-
-        {/* city */}
 
         <div className="mb-4">
           <label className="block text-sm font-medium text-gray-600">
@@ -393,187 +388,239 @@ const AddStaffForm = () => {
             <option value="" disabled>
               Select City
             </option>
-            {Cities.map((city) => (
+            {(citiesData[value.state] || []).map((city) => (
               <option key={city} value={city}>
                 {city}
               </option>
             ))}
           </select>
           {errors.city && (
-            <span className="text-red-500 text-xs">{errors.City.message}</span>
+            <span className="text-red-500 text-xs">{errors.city.message}</span>
           )}
         </div>
 
-        {/* fifth row */}
-        {/* Pincode */}
 
-        <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-600">
-            Pincode
-          </label>
-          <input
-            onChange={handleChange}
-            name="pincode"
-            {...register("pincode", { required: "Pincode is required" })}
-            className={`mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring focus:border-blue-300 ${
-              errors.pincode ? "border-red-500" : ""
-            }`}
-          />
-          {errors.pincode && (
-            <span className="text-red-500 text-xs">
-              {errors.pincode.message}
-            </span>
-          )}
-        </div>
-
-        {/* sixth row */}
-
-        {/* username */}
-
-        <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-600">
-            Username
-          </label>
-          <input
-            onChange={handleChange}
-            name="pincode"
-            {...register("username", { required: "Username is required" })}
-            className={`mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring focus:border-blue-300 ${
-              errors.username ? "border-red-500" : ""
-            }`}
-          />
-          {errors.username && (
-            <span className="text-red-500 text-xs">
-              {errors.username.message}
-            </span>
-          )}
-        </div>
-
-        {/* password */}
-
-        <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-600">
-            Password
-          </label>
-          <input
-            onChange={handleChange}
-            {...register("password", { required: "Password is required" })}
-            className={`mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring focus:border-blue-300 ${
-              errors.password ? "border-red-500" : ""
-            }`}
-          />
-          {errors.password && (
-            <span className="text-red-500 text-xs">
-              {errors.password.message}
-            </span>
-          )}
-        </div>
-
-        <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-600">
-            Status
-          </label>
-          <input
-            onChange={handleChange}
-            {...register("status")}
-            className={`mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring focus:border-blue-300 ${
-              errors.status ? "border-red-500" : ""
-            }`}
-          />
-          {errors.status && (
-            <span className="text-red-500 text-xs">
-              {errors.status.message}
-            </span>
-          )}
-        </div>
-
-        <div className="file-upload mb-4">
-          <label className="block text-sm font-medium text-gray-600" htmlFor="photo">Upload Photo</label>
-          <input
-            type="file"
-            id="photo"
-            name="photo"
-            {...register("photo", { required: "Photo is required" })}
-          />
-          {errors.photo && (
-            <span className="text-red-500 text-xs">
-              {errors.photo.message}
-            </span>
-          )}
-        </div>
-        <div className="file-upload mb-4">
-          <label className="block text-sm font-medium text-gray-600" htmlFor="signature">Upload sign</label>
-          <input
-            type="file"
-            id="signature"
-            name="signature"
-            {...register("signature", { required: "signature is required" })}
-          />
-          {errors.signature && (
-            <span className="text-red-500 text-xs">
-              {errors.signature.message}
-            </span>
-          )}
-        </div>
-        <div className="file-upload mb-4">
-          <label className="block text-sm font-medium text-gray-600" htmlFor="aadhar">Upload Aadhar</label>
-          <input
-            type="file"
-            id="aadhar"
-            name="aadhar"
-            {...register("aadhar", { required: "aadhar is required" })}
-          />
-          {errors.aadhar && (
-            <span className="text-red-500 text-xs">
-              {errors.aadhar.message}
-            </span>
-          )}
-        </div>
-        <div className="file-upload mb-4">
-          <label className="block text-sm font-medium text-gray-600" htmlFor="pancard">Upload Pancard</label>
-          <input
-            type="file"
-            id="pancard"
-            name="pancard"
-            {...register("pancard", { required: "pancard is required" })}
-          />
-          {errors.pancard && (
-            <span className="text-red-500 text-xs">
-              {errors.pancard.message}
-            </span>
-          )}
-        </div>
-        <div className="file-upload mb-4">
-          <label className="block text-sm font-medium text-gray-600" htmlFor="cheque">Upload Cheque</label>
-          <input
-            type="file"
-            id="cheque"
-            name="cheque"
-            {...register("cheque", { required: "cheque is required" })}
-          />
-          {errors.cheque && (
-            <span className="text-red-500 text-xs">
-              {errors.cheque.message}
-            </span>
-          )}
-        </div>
-        <div className="file-upload, mb-4">
-            <label className="block text-sm font-medium text-gray-600" htmlFor="licence">Upload Driving</label>
-            <input type="file" id="licence" name="licence"
-
-            {...register("cheque", { required: "cheque is required" })}
+          {/* Pincode */}
+          <div className="row-span-1 col-span-1 mb-4">
+            <label className="block text-sm font-medium text-gray-600">
+              Pincode
+            </label>
+            <input
+              {...register("pincode", { required: "Pincode is required" })}
+              className={`mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring focus:border-blue-300 ${
+                errors.pincode ? "border-red-500" : ""
+              }`}
             />
-            {errors.cheque && (
-            <span className="text-red-500 text-xs">
-                {errors.cheque.message}
-            </span>
+            {errors.pincode && (
+              <span className="text-red-500 text-xs">
+                {errors.pincode.message}
+              </span>
             )}
-        </div>
+          </div>
 
-        <button disabled={isSubmitting}  className='w-full h-10 mt-36 bg-blue-500 text-white  rounded-md uppercase hover:opacity-95 disabled:opacity-85'>
-          {isSubmitting ? 'Please Wait...' : 'Submit'}
-          </button>
+          {/* Username */}
+          <div className="row-span-1 col-span-1 mb-4">
+            <label className="block text-sm font-medium text-gray-600">
+              Username
+            </label>
+            <input
+              {...register("username", { required: "Username is required" })}
+              className={`mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring focus:border-blue-300 ${
+                errors.username ? "border-red-500" : ""
+              }`}
+            />
+            {errors.username && (
+              <span className="text-red-500 text-xs">
+                {errors.username.message}
+              </span>
+            )}
+          </div>
 
+          {/* Password */}
+          <div className="row-span-1 col-span-1 mb-4">
+            <label className="block text-sm font-medium text-gray-600">
+              Password
+            </label>
+            <input
+              {...register("password", { required: "Password is required" })}
+              className={`mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring focus:border-blue-300 ${
+                errors.password ? "border-red-500" : ""
+              }`}
+            />
+            {errors.password && (
+              <span className="text-red-500 text-xs">
+                {errors.password.message}
+              </span>
+            )}
+          </div>
+          <div className="col-span-1 ">
+
+          </div>
+
+          {/* Photo */}
+          <div className="row-span-1 col-span-1 mb-4">
+            <label className="block text-sm font-medium text-gray-600">
+              Photo
+            </label>
+            <input
+              type="file"
+              className={`mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring focus:border-blue-300 ${
+                errors.photo ? "border-red-500" : ""
+              }`}
+              onChange={(e)=>{
+                setValue('photo', e.target.files)
+                setChange(prev=>!prev)
+              }}
+            />
+            {errors.photo && (
+              <span className="text-red-500 text-xs">
+                {errors.photo.message}
+              </span>
+            )}
+              <img
+            className="w-full aspect-square bg-white border border-black "
+            src={value.photo&&value.photo[0] && URL.createObjectURL(value.photo[0])}
+          />
+
+          </div>
+
+          {/* Signature */}
+          <div className="row-span-1 col-span-1 mb-4">
+            <label className="block text-sm font-medium text-gray-600">
+              Signature
+            </label>
+            <input
+              type="file"
+              className={`mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring focus:border-blue-300 ${
+                errors.signature ? "border-red-500" : ""
+              }`}
+              onChange={(e)=>{
+                setValue('signature', e.target.files)
+                setChange(prev=>!prev)
+              }}
+            />
+            {errors.signature && (
+              <span className="text-red-500 text-xs">
+                {errors.signature.message}
+              </span>
+            )}
+            <img
+            className="w-full aspect-square bg-white border border-black "
+            src={value.signature&&value.signature[0] && URL.createObjectURL(value.signature[0])}
+          />
+          </div>
+
+          {/* Aadhar */}
+          <div className="row-span-1 col-span-1 mb-4">
+            <label className="block text-sm font-medium text-gray-600">
+              Aadhar
+            </label>
+            <input
+              type="file"
+              className={`mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring focus:border-blue-300 ${
+                errors.aadhar ? "border-red-500" : ""
+              }`}
+              onChange={(e)=>{
+                setValue('aadhar', e.target.files)
+                setChange(prev=>!prev)
+              }}
+            />
+            {errors.aadhar && (
+              <span className="text-red-500 text-xs">
+                {errors.aadhar.message}
+              </span>
+            )}
+               <img
+            className="w-full aspect-square bg-white border border-black "
+            src={value.aadhar&&value.aadhar[0] && URL.createObjectURL(value.aadhar[0])}
+          />
+          </div>
+
+          {/* PAN Card */}
+          <div className="row-span-1 col-span-1 mb-4">
+            <label className="block text-sm font-medium text-gray-600">
+              PAN Card
+            </label>
+            <input
+              type="file"
+              className={`mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring focus:border-blue-300 ${
+                errors.pancard ? "border-red-500" : ""
+              }`}
+              onChange={(e)=>{
+                setValue('pancard', e.target.files)
+                setChange(prev=>!prev)
+              }}
+            />
+            {errors.pancard && (
+              <span className="text-red-500 text-xs">
+                {errors.pancard.message}
+              </span>
+            )}
+             <img
+            className="w-full aspect-square bg-white border border-black "
+            src={value.pancard && value.pancard[0] && URL.createObjectURL(value.pancard[0])}
+          />
+          </div>
+
+          {/* Cheque */}
+          <div className="row-span-1 col-span-1 mb-4">
+            <label className="block text-sm font-medium text-gray-600">
+              Cheque
+            </label>
+            <input
+              type="file"
+              className={`mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring focus:border-blue-300 ${
+                errors.cheque ? "border-red-500" : ""
+              }`}
+              onChange={(e)=>{
+                setValue('cheque', e.target.files)
+                setChange(prev=>!prev)
+              }}
+            />
+
+            {errors.cheque && (
+              <span className="text-red-500 text-xs">
+                {errors.cheque.message}
+              </span>
+            )}
+            <img
+            className="w-full aspect-square bg-white border border-black "
+            src={value.cheque &&  value.cheque[0] && URL.createObjectURL(value.cheque[0])}
+          />
+          </div>
+
+          {/* Licence */}
+          <div className="row-span-1 col-span-1 mb-4">
+            <label className="block text-sm font-medium text-gray-600">
+              License
+            </label>
+            <input
+              type="file"
+              className={`mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring focus:border-blue-300 ${
+                errors.licence ? "border-red-500" : ""
+              }`}
+              onChange={(e)=>{
+                setValue('licence', e.target.files)
+                setChange(prev=>!prev)
+              }}
+            />
+            {errors.licence && (
+              <span className="text-red-500 text-xs">
+                {errors.licence.message}
+              </span>
+            )}
+            <img
+            className="w-full aspect-square bg-white border border-black "
+            src={value.licence &&  value.licence[0] && URL.createObjectURL(value.licence[0])}
+          />
+          </div>
+        </>
+        <button
+          disabled={isSubmitting}
+          className="w-full h-10  col-span-3 bg-blue-500 text-white  rounded-md uppercase hover:opacity-95 disabled:opacity-85"
+        >
+          {isSubmitting ? "Please Wait..." : "Submit"}
+        </button>
       </form>
       <ToastContainer
         position="top-center"

@@ -1,16 +1,54 @@
 import React from 'react'
 import { useForm } from "react-hook-form";
 import axios from "axios";
+import Select from "react-select";
 import { BASE_URL } from "../../../main";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { z } from 'zod';
+import { zodResolver } from "@hookform/resolvers/zod";
+
+const allowedFileTypes = ['application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'application/pdf'];
+
+const isFileValid = (file) => {
+  return allowedFileTypes.includes(file.type);
+};
+
+const validationSchema = z.object({
+  selectedMonth: z.string().min(1, 'Select month is required'),
+  file: z.object({
+    data: z.instanceof(File),
+    name: z.string().refine((value) => isFileValid(value), {
+      message: 'Invalid file type. Please upload a docx, doc, or pdf file.',
+    }),
+  }),
+});
+
+const monthsArray = [
+  { label: 'January', value: 'Jan' },
+  { label: 'February', value: 'Feb' },
+  { label: 'March', value: 'Mar' },
+  { label: 'April', value: 'Apr' },
+  { label: 'May', value: 'May' },
+  { label: 'June', value: 'Jun' },
+  { label: 'July', value: 'Jul' },
+  { label: 'August', value: 'Aug' },
+  { label: 'September', value: 'Sep' },
+  { label: 'October', value: 'Oct' },
+  { label: 'November', value: 'Nov' },
+  { label: 'December', value: 'Dec' },
+];
 
 const CombineData = () => {
 
     const {
         handleSubmit,
+        register,
+        setValue,
         formState: { errors, isSubmitting },
-      } = useForm();
+      } = useForm({
+        resolver: zodResolver(validationSchema),
+      });
 
       const token = localStorage.getItem("token");
 
@@ -54,26 +92,22 @@ const CombineData = () => {
       <div className="mb-2 col-span-2">
         <label className="block text-sm font-medium text-black">
           Select Month
+          <span className="text-red-600">*</span>
         </label>
-        <select
-          className="mt-1 p-2 border rounded-md w-full"
-        >
-          <option value="" disabled>
-            Select month
-          </option>
-          <option value="January">January</option>
-          <option value="February">February</option>
-          <option value="March">March</option>
-          <option value="April">April</option>
-          <option value="May">May</option>
-          <option value="June">June</option>
-          <option value="July">July</option>
-          <option value="August">August</option>
-          <option value="September">September</option>
-          <option value="October">October</option>
-          <option value="November">November</option>
-          <option value="December">December</option>
-        </select>
+        <Select
+          onChange={(selectedOption) => {
+            setValue("selectedMonth", selectedOption.value);
+          }}
+          options={monthsArray.map((month) => ({
+            value: month.value,
+            label: month.label,
+          }))}
+          className={`mt-1 p-2 border rounded-md ${
+            errors.selectedMonth ? "border-red-500" : ""
+          }`}
+        />
+
+        
         {errors.selectedMonth && (
           <span className="text-red-500 text-xs">
             {errors.selectedMonth.message}
@@ -84,12 +118,17 @@ const CombineData = () => {
       <div className="my-4 col-span-2">
         <label htmlFor="file" className="block text-sm font-medium text-black">
           Choose file to upload
+          <span className="text-red-600">*</span>
         </label>
         <input
           type="file"
           id="file"
           name="file"
-          className="mt-1 p-2 border rounded-md w-full"
+          accept='.doc, .docx, .pdf'
+         
+          // className="mt-1 p-2 border rounded-md w-full"
+          className={`mt-1 p-2 border rounded-md w-full ${errors.file ? 'border-red-500' : ''}`}
+          {...register('file', { required: 'File is required' })}
         />
         {errors.file && (
           <span className="text-red-500 text-xs">

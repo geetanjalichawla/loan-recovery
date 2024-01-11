@@ -6,7 +6,7 @@ const Navbar = () => {
   const { currentUser } = useSelector((state) => state.user);
   console.log(currentUser);
   return (
-    <nav className="fixed top-0 z-50 w-full  border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700">
+    <nav className="fixed top-0 z-50 w-full  border-b border-gray-600 bg-gray-800">
       <div className="pr-3 lg:pr-3">
         <div className="flex items-center justify-between">
           <div className="flex items-center justify-start rtl:justify-end">

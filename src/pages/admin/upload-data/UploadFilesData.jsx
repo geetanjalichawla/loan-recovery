@@ -33,15 +33,11 @@ function UploadFilesData() {
 
 
   const columns = [
-    // Define your table columns based on the data properties
     { Header: "File Name", accessor: "fileName" },
     { Header: "Month", accessor: "month" },
     { Header: "Upload Date", accessor: "createdAt" },
     { Header: "Count", accessor: "count" },
-    { Header: "Status", accessor: "status" },
-    // { Header: "Action", accessor: "" },
-    
-    // Add more columns as needed
+    { Header: "Status", accessor: "status" }
   ];
 
   return (

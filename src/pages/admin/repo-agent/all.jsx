@@ -45,16 +45,10 @@ function RepoAgentList() {
 
   return (
 
-    <div className="container bg-blue-400 text-white  mx-auto my-4">
+    <div className="container bg-gray-600 text-white  my-4">
       <h2 className="text-2xl font-bold mb-4">Repo Agents List</h2>
       <CustomTable columns={columns} data={repoAgents} searchEnabled={true} />
     </div>
-
-
-    // <div>
-    //   <h2>Repo Agents List</h2>
-    //   <CustomTable columns={columns} data={repoAgents} searchEnabled={true} />
-    // </div>
   );
 }
 

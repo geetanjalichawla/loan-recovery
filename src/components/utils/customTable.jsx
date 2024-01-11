@@ -70,7 +70,7 @@ function CustomTable({ columns, data, searchEnabled }) {
       className="table-auto min-w-full text-sm text-left rtl:text-right text-black overflow-x-auto"
       // className="table-auto w-full"
       >
-        <thead className="text-xs text-black uppercase bg-gray-400 " >
+        <thead className="text-xs text-black uppercase bg-teal-300 " >
           {headerGroups.map((headerGroup) => (
             <tr {...headerGroup.getHeaderGroupProps()} key={headerGroup.id}>
               {headerGroup.headers.map((column) => (
@@ -119,7 +119,7 @@ function CustomTable({ columns, data, searchEnabled }) {
           {page.map((row) => {
             prepareRow(row);
             return (
-              <tr  className="odd:bg-white even:bg-gray-400"
+              <tr  className="odd:bg-white even:bg-teal-300"
               key={row.id} {...row.getRowProps()}>
                 {row.cells.map((cell) => (
                   <td key={cell.id} {...cell.getCellProps()} className="px-4 py-2">

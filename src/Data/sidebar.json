@@ -60,11 +60,11 @@
             },
             {
                 "title": "Combine Data",
-                "path": "/"
+                "path": "/upload-data/combine-data"
             },
             {
-                "title": "",
-                "path": "/"
+                "title": "Upload Files Data",
+                "path": "/upload-data/upload-files-data"
             },
             {
                 "title": "",

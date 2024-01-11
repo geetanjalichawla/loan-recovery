@@ -13,6 +13,8 @@ import GenerateRepoId from "./pages/admin/repo-agent/gentrate-id";
 import IdCardList from "./pages/admin/repo-agent/id-all";
 import OfficeStaffList from "./pages/admin/office-staff/all";
 import BankWiseData from "./pages/admin/upload-data/BankWiseData";
+import CombineData from "./pages/admin/upload-data/CombineData";
+import UploadFilesData from "./pages/admin/upload-data/UploadFilesData";
 
 const App = () => {
   const auth = localStorage.getItem("token");
@@ -100,6 +102,26 @@ const App = () => {
             <ProtectedRoute isAuthenticated={!!auth} redirect="/login">
               <Dashboard>
                 <BankWiseData />
+              </Dashboard>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/upload-data/combine-data"
+          element={
+            <ProtectedRoute isAuthenticated={!!auth} redirect="/login">
+              <Dashboard>
+                <CombineData />
+              </Dashboard>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/upload-data/upload-files-data"
+          element={
+            <ProtectedRoute isAuthenticated={!!auth} redirect="/login">
+              <Dashboard>
+                <UploadFilesData />
               </Dashboard>
             </ProtectedRoute>
           }

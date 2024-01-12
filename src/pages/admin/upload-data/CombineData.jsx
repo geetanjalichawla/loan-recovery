@@ -9,8 +9,8 @@ import { z } from 'zod';
 import { zodResolver } from "@hookform/resolvers/zod";
 
 const validationSchema = z.object({
-  selectedMonth: z.string().min(1, 'Select month is required'),
-  doc : typeof window === "undefined" ? z.any() : z.instanceof(File)
+  month: z.string().min(1, 'Select month is required'),
+  file : typeof window === "undefined" ? z.any() : z.instanceof(File)
 });
 
 const monthsArray = [
@@ -47,11 +47,11 @@ const CombineData = () => {
         console.log(data);
         try {
           const response = await axios.post(
-            `${BASE_URL}/upload`,
-            data,
+            `${BASE_URL}/upload`,data,
             {
               headers: {
                 Authorization: `Bearer ${token}`,
+                "Content-Type":"multipart/form-data"
               },
             }
           );
@@ -78,9 +78,7 @@ const CombineData = () => {
       const file = e.target.files[0];
       console.log({ file });
       setFile(file);
-      setValue("doc", URL.createObjectURL(file));
-      setValue("doc", file);
-      console.log({ values });
+      setValue("file", file);
     };
 
 
@@ -97,19 +95,19 @@ const CombineData = () => {
         </label>
         <Select
           onChange={(selectedOption) => {
-            setValue("selectedMonth", selectedOption.value);
+            setValue("month", selectedOption.value);
           }}
           options={monthsArray.map((month) => ({
             value: month.value,
             label: month.label,
           }))}
           className={`mt-1 p-2 border rounded-md ${
-            errors.selectedMonth ? "border-red-500" : ""
+            errors.month ? "border-red-500" : ""
           }`}
         />
-        {errors.selectedMonth && (
+        {errors.month && (
           <span className="text-red-500 text-xs">
-            {errors.selectedMonth.message}
+            {errors.month.message}
           </span>
         )}
       </div>
@@ -127,9 +125,9 @@ const CombineData = () => {
           className="mt-1 p-2 border rounded-md w-full"
           onChange={(e) => handleFileChange(e)}
         />
-        {errors.doc && (
+        {errors.file && (
           <span className="text-red-500 text-xs">
-            {errors.doc.message}
+            {errors.file.message}
           </span>
         )}
       </div>

@@ -5,32 +5,31 @@ import Select from "react-select";
 import { BASE_URL } from "../../../main";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { z } from 'zod';
+import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 const validationSchema = z.object({
-  selectedMonth: z.string().min(1, 'Select month is required'),
-  bankName: z.string().min(1, 'Select bank is required'),
-  doc : typeof window === "undefined" ? z.any() : z.instanceof(File)
+  month: z.string().min(1, "Select month is required"),
+  bank: z.string().min(1, "Select bank is required"),
+  file: typeof window === "undefined" ? z.any() : z.instanceof(File),
 });
 
 const monthsArray = [
-  { label: 'January', value: 'Jan' },
-  { label: 'February', value: 'Feb' },
-  { label: 'March', value: 'Mar' },
-  { label: 'April', value: 'Apr' },
-  { label: 'May', value: 'May' },
-  { label: 'June', value: 'Jun' },
-  { label: 'July', value: 'Jul' },
-  { label: 'August', value: 'Aug' },
-  { label: 'September', value: 'Sep' },
-  { label: 'October', value: 'Oct' },
-  { label: 'November', value: 'Nov' },
-  { label: 'December', value: 'Dec' },
+  { label: "January", value: "Jan" },
+  { label: "February", value: "Feb" },
+  { label: "March", value: "Mar" },
+  { label: "April", value: "Apr" },
+  { label: "May", value: "May" },
+  { label: "June", value: "Jun" },
+  { label: "July", value: "Jul" },
+  { label: "August", value: "Aug" },
+  { label: "September", value: "Sep" },
+  { label: "October", value: "Oct" },
+  { label: "November", value: "Nov" },
+  { label: "December", value: "Dec" },
 ];
 
 const BankWiseData = () => {
-
   const [banks, setBanks] = useState([]);
 
   const {
@@ -70,6 +69,7 @@ const BankWiseData = () => {
         {
           headers: {
             Authorization: `Bearer ${token}`,
+            "Content-Type": "multipart/form-data",
           },
         }
       );
@@ -80,7 +80,8 @@ const BankWiseData = () => {
 
       if (error.response) {
         console.error("Server responded with:", error.response.data.error);
-        const errorMessage = error.response.data.error || "An Error occured. Please try Again!";
+        const errorMessage =
+          error.response.data.error || "An Error occured. Please try Again!";
         toast.error(errorMessage);
       } else if (error.request) {
         console.error("No response received:", error.request);
@@ -96,11 +97,8 @@ const BankWiseData = () => {
     const file = e.target.files[0];
     console.log({ file });
     setFile(file);
-    // setValue("doc", URL.createObjectURL(file));
-    setValue("doc", file);
-    console.log({ values });
+    setValue("file", file);
   };
-
 
   return (
     <form
@@ -114,21 +112,19 @@ const BankWiseData = () => {
         </label>
         <Select
           onChange={(selectedOption) => {
-            setValue("selectedMonth", selectedOption.value);
+            setValue("month", selectedOption.value);
           }}
           options={monthsArray.map((month) => ({
             value: month.value,
             label: month.label,
           }))}
           className={`mt-1 p-2 border rounded-md ${
-            errors.selectedMonth ? "border-red-500" : ""
+            errors.month ? "border-red-500" : ""
           }`}
         />
-        
-        {errors.selectedMonth && (
-          <span className="text-red-500 text-xs">
-            {errors.selectedMonth.message}
-          </span>
+
+        {errors.month && (
+          <span className="text-red-500 text-xs">{errors.month.message}</span>
         )}
       </div>
 
@@ -139,20 +135,18 @@ const BankWiseData = () => {
         </label>
         <Select
           onChange={(selectedOption) => {
-            setValue("bankName", selectedOption.value);
+            setValue("bank", selectedOption.value);
           }}
           options={banks.map((bank) => ({
-            value: bank.bankId,
+            value: bank.bankName,
             label: bank.bankName,
           }))}
           className={`mt-1 p-2 border rounded-md ${
-            errors.bankName ? "border-red-500" : ""
+            errors.bank ? "border-red-500" : ""
           }`}
         />
-        {errors.bankName && (
-          <span className="text-red-500 text-xs">
-            {errors.bankName.message}
-          </span>
+        {errors.bank && (
+          <span className="text-red-500 text-xs">{errors.bank.message}</span>
         )}
       </div>
 
@@ -165,14 +159,12 @@ const BankWiseData = () => {
           type="file"
           id="file"
           name="file"
-          accept='.xls, .xlsm, .xlsx, .csv, .txt'
+          accept=".xls, .xlsm, .xlsx, .csv, .txt"
           className="mt-1 p-2 border rounded-md w-full"
           onChange={(e) => handleFileChange(e)}
         />
-        {errors.doc && (
-          <span className="text-red-500 text-xs">
-            {errors.doc.message}
-          </span>
+        {errors.file && (
+          <span className="text-red-500 text-xs">{errors.file.message}</span>
         )}
       </div>
 
@@ -192,7 +184,7 @@ const BankWiseData = () => {
         pauseOnFocusLoss
         draggable
         pauseOnHover
-        />
+      />
     </form>
   );
 };

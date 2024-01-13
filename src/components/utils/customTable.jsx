@@ -7,9 +7,9 @@ import {
   useFilters,
 } from "react-table";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 
-function CustomTable({ columns, data, searchEnabled }) {
+function CustomTable({ columns, data, searchEnabled, filterEnabled }) {
   const {
     getTableBodyProps,
     headerGroups,
@@ -37,15 +37,14 @@ function CustomTable({ columns, data, searchEnabled }) {
   );
 
   const inputRef = useRef();
-
   return (
     <div className="bg-white p-4 rounded-xl overflow-x-auto">
       {searchEnabled && (
         <div className="mb-4">
-          <input className="bg-gray-50 border border-blue-600 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5   "
+          <input
+            className="bg-gray-50 border border-blue-600 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5   "
             ref={inputRef}
             type="text"
-            // className="border-0.5 border-gray-300 px-3 py-2"
             value={globalFilter || ""}
             onChange={(e) => {
               setGlobalFilter(e.target.value || undefined);
@@ -54,8 +53,7 @@ function CustomTable({ columns, data, searchEnabled }) {
           />
           {globalFilter && (
             <button
-            className="p-2.5 ms-2 text-sm font-medium text-white bg-blue-700 rounded-lg border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300"
-              // className="ml-2 text-gray-300 hover:text-gray-600"
+              className="p-2.5 ms-2 text-sm font-medium text-white bg-blue-700 rounded-lg border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300"
               onClick={() => {
                 setGlobalFilter("");
               }}
@@ -66,15 +64,12 @@ function CustomTable({ columns, data, searchEnabled }) {
         </div>
       )}
 
-      <table 
-      className="table-auto min-w-full text-sm text-left rtl:text-right text-black overflow-x-auto"
-      // className="table-auto w-full"
-      >
-        <thead className="text-xs text-black uppercase bg-teal-300 " >
+      <table className="table-auto min-w-full text-sm text-left rtl:text-right text-black overflow-x-auto">
+        <thead className="text-xs text-black uppercase bg-teal-300 ">
           {headerGroups.map((headerGroup) => (
             <tr {...headerGroup.getHeaderGroupProps()} key={headerGroup.id}>
               {headerGroup.headers.map((column) => (
-                <th 
+                <th
                   key={column.id}
                   {...column.getHeaderProps(column.getSortByToggleProps())}
                   className="px-6 py-3"
@@ -88,7 +83,7 @@ function CustomTable({ columns, data, searchEnabled }) {
                         <span>↑</span>
                       )
                     ) : (
-                      <span style={{ width: '20px' }} />
+                      <span style={{ width: "20px" }} />
                     )}
                   </div>
                 </th>
@@ -100,29 +95,37 @@ function CustomTable({ columns, data, searchEnabled }) {
               <React.Fragment key={headerGroup.id}>
                 {headerGroup.headers.map((column) => (
                   <td key={column.id} className="px-4 py-2">
-                    <input
-                      type="text"
-                      className="border border-gray-300 px-2 py-1"
-                      onChange={(e) => {
-                        column.setFilter(e.target.value || "");
-                      }}
-                      placeholder="Filter"
-                    />
+                    {filterEnabled && (
+                      <input
+                        type="text"
+                        className="border border-gray-300 px-2 py-1"
+                        onChange={(e) => {
+                          column.setFilter(e.target.value || "");
+                        }}
+                        placeholder="Filter"
+                      />
+                    )}
                   </td>
                 ))}
               </React.Fragment>
             ))}
           </tr>
         </thead>
-        <tbody className="overflow-x-auto"
-         {...getTableBodyProps()}>
+        <tbody className="overflow-x-auto" {...getTableBodyProps()}>
           {page.map((row) => {
             prepareRow(row);
             return (
-              <tr  className="odd:bg-white even:bg-teal-300"
-              key={row.id} {...row.getRowProps()}>
+              <tr
+                className="odd:bg-white even:bg-teal-300"
+                key={row.id}
+                {...row.getRowProps()}
+              >
                 {row.cells.map((cell) => (
-                  <td key={cell.id} {...cell.getCellProps()} className="px-4 py-2">
+                  <td
+                    key={cell.id}
+                    {...cell.getCellProps()}
+                    className="px-4 py-2"
+                  >
                     {cell.render("Cell")}
                   </td>
                 ))}
@@ -183,7 +186,7 @@ CustomTable.propTypes = {
     PropTypes.shape({
       Header: PropTypes.string.isRequired,
       accessor: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
-      cell:PropTypes.any
+      cell: PropTypes.any,
     })
   ).isRequired,
   data: PropTypes.arrayOf(PropTypes.object).isRequired,

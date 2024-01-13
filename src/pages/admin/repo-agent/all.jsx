@@ -47,7 +47,7 @@ function RepoAgentList() {
 
     <div className="container bg-gray-600 text-white  my-4">
       <h2 className="text-2xl font-bold mb-4">Repo Agents List</h2>
-      <CustomTable columns={columns} data={repoAgents} searchEnabled={true} />
+      <CustomTable columns={columns} data={repoAgents} searchEnabled={true} filterEnabled={true} />
     </div>
   );
 }

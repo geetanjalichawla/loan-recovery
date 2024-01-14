@@ -4,6 +4,11 @@
         "title": "Dashboard",
         "path": "/"
     },
+    {
+        "icon": "bi  bi-grid ",
+        "title": "Search",
+        "path": "/search"
+    },
 
     {
         "title": "Repo Agent",

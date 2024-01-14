@@ -16,6 +16,7 @@ import BankWiseData from "./pages/admin/upload-data/BankWiseData";
 import CombineData from "./pages/admin/upload-data/CombineData";
 import UploadFilesData from "./pages/admin/upload-data/UploadFilesData";
 import AddStaffForm from "./pages/admin/office-staff/add";
+import SearchComponent from "./pages/admin/search/page";
 
 const App = () => {
   const auth = localStorage.getItem("token");
@@ -47,6 +48,16 @@ const App = () => {
           }
         />
 
+        <Route
+          path="/search"
+          element={
+            <ProtectedRoute isAuthenticated={!!auth} redirect="/login">
+              <Dashboard>
+                <SearchComponent />
+              </Dashboard>
+            </ProtectedRoute>
+          }
+        />
         <Route
           path="/repo-agent/add"
           element={

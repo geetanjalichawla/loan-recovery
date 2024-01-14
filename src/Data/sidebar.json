@@ -71,5 +71,31 @@
                 "path": "/"
             }
         ]
+    },
+    {
+        "title": "Reports",
+        "icon": "bi  bi-person-badge-fill",
+        "childrens": [
+            {
+                "title": "All Vehicles List",
+                "path": "/reports/all-vehicle-list"
+            },
+            {
+                "title": "Hold Vehicles List",
+                "path": "/reports/hold-vehicle-list"
+            },
+            {
+                "title": "Release Vehicles List",
+                "path": "/reports/release-vehicle-list"
+            },
+            {
+                "title": "Repo Vehicles List",
+                "path": "/reports/repo-vehicle-list"
+            },
+            {
+                "title": "Confirmation Vehicles List",
+                "path": "/reports/confirmation-vehicle-list"
+            }
+        ]
     }
 ]

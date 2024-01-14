@@ -16,6 +16,11 @@ import BankWiseData from "./pages/admin/upload-data/BankWiseData";
 import CombineData from "./pages/admin/upload-data/CombineData";
 import UploadFilesData from "./pages/admin/upload-data/UploadFilesData";
 import AddStaffForm from "./pages/admin/office-staff/add";
+import AllVehicleList from "./pages/admin/reports/AllVehicleList";
+import HoldVehicleList from "./pages/admin/reports/HoldVehicleList";
+import ReleaseVehicleList from "./pages/admin/reports/ReleaseVehicleList";
+import RepoVehicleList from "./pages/admin/reports/RepoVehicleList";
+import ConfirmationVehicleList from "./pages/admin/reports/ConfirmationVehicleList";
 
 const App = () => {
   const auth = localStorage.getItem("token");
@@ -133,6 +138,56 @@ const App = () => {
             <ProtectedRoute isAuthenticated={!!auth} redirect="/login">
               <Dashboard>
                 <UploadFilesData />
+              </Dashboard>
+            </ProtectedRoute>
+          }
+        />
+          <Route
+            path="/reports/all-vehicle-list"
+            element={
+              <ProtectedRoute isAuthenticated={!!auth} redirect="/login">
+                <Dashboard>
+                  <AllVehicleList />
+                </Dashboard>
+              </ProtectedRoute>
+            }
+          />
+        <Route
+          path="/reports/hold-vehicle-list"
+          element={
+            <ProtectedRoute isAuthenticated={!!auth} redirect="/login">
+              <Dashboard>
+                <HoldVehicleList />
+              </Dashboard>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/reports/release-vehicle-list"
+          element={
+            <ProtectedRoute isAuthenticated={!!auth} redirect="/login">
+              <Dashboard>
+                <ReleaseVehicleList />
+              </Dashboard>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/reports/repo-vehicle-list"
+          element={
+            <ProtectedRoute isAuthenticated={!!auth} redirect="/login">
+              <Dashboard>
+                <RepoVehicleList />
+              </Dashboard>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/reports/confirmation-vehicle-list"
+          element={
+            <ProtectedRoute isAuthenticated={!!auth} redirect="/login">
+              <Dashboard>
+                <ConfirmationVehicleList />
               </Dashboard>
             </ProtectedRoute>
           }

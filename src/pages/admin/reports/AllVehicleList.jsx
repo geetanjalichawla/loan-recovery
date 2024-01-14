@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { BASE_URL } from "../../../main";
 import CustomTable from "../../../components/utils/customTable";
 import axios from "axios";
+import Pagination from "../../../components/utils/Pagination";
 
 const AllVehicleList = () => {
   const [filesData, setFilesData] = useState([]);
@@ -52,6 +53,7 @@ const AllVehicleList = () => {
         searchEnabled={true}
         filterEnabled={false}
       />
+      <Pagination />
     </div>
   );
 };

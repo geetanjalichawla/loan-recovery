@@ -135,7 +135,7 @@ function CustomTable({ columns, data, searchEnabled, filterEnabled }) {
         </tbody>
       </table>
 
-      <div className="flex mt-4 space-x-2">
+      {/* <div className="flex mt-4 space-x-2">
         <select
           value={pageSize}
           onChange={(e) => setPageSize(Number(e.target.value))}
@@ -176,7 +176,7 @@ function CustomTable({ columns, data, searchEnabled, filterEnabled }) {
         >
           last
         </button>{" "}
-      </div>
+      </div> */}
     </div>
   );
 }

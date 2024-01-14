@@ -8,15 +8,12 @@ const SidebarItem = ({ item }) => {
   if (item.childrens) {
     return (
       <div className={open ? "sidebar-item open" : "sidebar-item"}>
-        <div className="sidebar-title">
+        <div onClick={() => setOpen(!open)} className="sidebar-title">
           <span>
             {item.icon && <i className={item.icon}></i>}
             {item.title}
           </span>
-          <i
-            className="bi-chevron-down toggle-btn"
-            onClick={() => setOpen(!open)}
-          ></i>
+          <i className="bi-chevron-down toggle-btn"></i>
         </div>
         <div className="sidebar-content">
           {item.childrens.map((child, index) => (

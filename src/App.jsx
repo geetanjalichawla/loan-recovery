@@ -22,6 +22,7 @@ import HoldVehicleList from "./pages/admin/reports/HoldVehicleList";
 import ReleaseVehicleList from "./pages/admin/reports/ReleaseVehicleList";
 import RepoVehicleList from "./pages/admin/reports/RepoVehicleList";
 import ConfirmationVehicleList from "./pages/admin/reports/ConfirmationVehicleList";
+import RepoAgentApproval from "./pages/admin/repo-agent-approval/RepoAgentApproval";
 
 const App = () => {
   const auth = localStorage.getItem("token");
@@ -199,6 +200,16 @@ const App = () => {
             <ProtectedRoute isAuthenticated={!!auth} redirect="/login">
               <Dashboard>
                 <ConfirmationVehicleList />
+              </Dashboard>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/repo-agents-approval"
+          element={
+            <ProtectedRoute isAuthenticated={!!auth} redirect="/login">
+              <Dashboard>
+                <RepoAgentApproval />
               </Dashboard>
             </ProtectedRoute>
           }

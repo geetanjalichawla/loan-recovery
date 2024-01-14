@@ -44,14 +44,6 @@
             {
                 "title": "Add Office Staff",
                 "path": "/office-staff/add"
-            },
-            {
-                "title": "",
-                "path": "/"
-            },
-            {
-                "title": "",
-                "path": "/"
             }
         ]
     },
@@ -70,10 +62,6 @@
             {
                 "title": "Upload Files Data",
                 "path": "/upload-data/upload-files-data"
-            },
-            {
-                "title": "",
-                "path": "/"
             }
         ]
     },
@@ -102,5 +90,10 @@
                 "path": "/reports/confirmation-vehicle-list"
             }
         ]
+    },
+    {
+        "icon": "bi bi-person-badge-fill",
+        "title": "Repo Agent Approval",
+        "path": "/repo-agents-approval"
     }
 ]

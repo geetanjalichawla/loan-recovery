@@ -4,6 +4,7 @@ import CustomTable from "../../../components/utils/customTable";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Pagination from "../../../components/utils/Pagination";
 
 const HoldVehicleList = () => {
   const [filesData, setFilesData] = useState([]);
@@ -97,12 +98,11 @@ const HoldVehicleList = () => {
 
   const columns = [
     { Header: "Regd. ID", accessor: "_id" },
-    // { Header: "Status", accessor: "status" },
     {
       Header: "Status",
       Cell: ({ row }) => (
         <div
-          className="px-2 py-1 text-center border-black rounded-lg"
+          className="px-2 py-1 font-extrabold text-center border border-black rounded-lg"
         >
           {row.original.status}
         </div>
@@ -149,6 +149,7 @@ const HoldVehicleList = () => {
         searchEnabled={true}
         filterEnabled={false}
       />
+      <Pagination />
 
       <ToastContainer
         position="top-center"

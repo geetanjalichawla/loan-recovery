@@ -3,6 +3,10 @@ import { BASE_URL } from "../../../main";
 import axios from "axios";
 import Pagination from "../../../components/utils/Pagination";
 import CustomTable2 from "../../../components/utils/CustomTable2";
+import { string, object } from "zod";
+
+
+const newPasswordSchema = string().min(8);
 
 function RepoAgentApproval() {
   const [repoAgents, setRepoAgents] = useState([]);
@@ -65,7 +69,28 @@ function RepoAgentApproval() {
     }
   };
 
+  const [newPasswordError, setNewPasswordError] = useState("");
+  const [confirmPasswordError, setConfirmPasswordError] = useState("");
+
   const handleChangePassword = async () => {
+
+    try {
+      newPasswordSchema.parse(newPassword);
+      setNewPasswordError(""); 
+    } catch (error) {
+      setNewPasswordError("New password must be at least 8 characters.");
+      return;
+    }
+
+    if (newPassword !== confirmPassword) {
+      setConfirmPasswordError("Passwords do not match.");
+      return;
+    } else {
+      setConfirmPasswordError("");
+    }
+
+
+
     try {
       const response = await axios.put(
         `${BASE_URL}/change-agent-password/${selectedAgent._id}`,
@@ -223,15 +248,25 @@ function RepoAgentApproval() {
               placeholder="New Password"
               value={newPassword}
               onChange={(e) => setNewPassword(e.target.value)}
-              className="mb-4 px-3 py-2 border rounded-md w-full"
+              className={`mb-4 px-3 py-2 border rounded-md w-full ${
+                newPasswordError ? "border-red-500" : ""
+              }`}
             />
+            {newPasswordError && (
+              <p className="text-red-500 text-sm mb-2">{newPasswordError}</p>
+            )}
             <input
               type="password"
               placeholder="Confirm Password"
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
-              className="mb-4 px-3 py-2 border rounded-md w-full"
+              className={`mb-4 px-3 py-2 border rounded-md w-full ${
+                confirmPasswordError ? "border-red-500" : ""
+              }`}
             />
+            {confirmPasswordError && (
+              <p className="text-red-500 text-sm mb-2">{confirmPasswordError}</p>
+            )}
             <button
               onClick={handleChangePassword}
               className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition"

@@ -4,13 +4,39 @@ import { FaSearch as SearchIcon } from 'react-icons/fa'; // Assuming FaSearch is
 import { BASE_URL } from "../../../main";
 
 import CustomTable from "../../../components/utils/CustomTable2";
+import { ToggleStatus } from "./component/statusChange";
 
 const ReleaseVehicleList = () => {
   const [data, setData] = useState({ data: [], totalPages: 0 });
 
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
-  
+  const fetchDataFromAPI = async () => {
+    try {
+      const response = await axios.get(
+        `${BASE_URL}/release-vehicle-list?page=${page}&search=${search}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setData({
+        data: response.data.vehiclesList,
+        totalPages: response.data.totalPages,
+      });
+
+      const newUrl = `${window.location.pathname}?page=${page}${search ? `&search=${search}`: ""}`;
+      window.history.pushState({ path: newUrl }, '', newUrl);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+      return {
+        data: [],
+        totalPages: 0,
+      };
+    }
+  };
+
   const columns = [
     { Header: "Ser. No.", accessor: "_id" },
     { Header: "Regd. No.", accessor: "regNo" },
@@ -27,7 +53,7 @@ const ReleaseVehicleList = () => {
             <div
             className="px-2 py-1 text-center bg-green-500 rounded-lg text-white"
             >
-          Release
+          Release <ToggleStatus id={row.original.agreementNo} getData={fetchDataFromAPI} status={row.original.status}/>
         </div>
       ),
     }
@@ -46,31 +72,6 @@ const ReleaseVehicleList = () => {
 
 
   useEffect(() => {
-    const fetchDataFromAPI = async () => {
-      try {
-        const response = await axios.get(
-          `${BASE_URL}/release-vehicle-list?page=${page}&search=${search}`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-        setData({
-          data: response.data.vehiclesList,
-          totalPages: response.data.totalPages,
-        });
-
-        const newUrl = `${window.location.pathname}?page=${page}${search ? `&search=${search}`: ""}`;
-        window.history.pushState({ path: newUrl }, '', newUrl);
-      } catch (error) {
-        console.error('Error fetching data:', error);
-        return {
-          data: [],
-          totalPages: 0,
-        };
-      }
-    };
 
     fetchDataFromAPI();
   }, [search, page, token]);

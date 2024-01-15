@@ -3,9 +3,7 @@ import logo from '../../assets/logo.jpeg'
 
 const Logo = () => {
   return (
-      <div className='object-cover'>
-        <img height="56px" width="220px" src={logo} alt="logo" />
-      </div>
+        <img src={logo} alt="logo" className="w-full h-auto" />
   )
 }
 

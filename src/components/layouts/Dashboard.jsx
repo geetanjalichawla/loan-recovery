@@ -5,10 +5,14 @@ import Sidebar from "./Sidebar";
 const Dashboard = ({ children }) => {
   return (
     <div>
-      <Navbar />
       <Sidebar />
 
-      <div className=" px-10 py-24 sm:ml-64">{children}</div>
+      <div className="sm:ml-64">
+            <Navbar />
+            <div className="p-10 mt-10">
+            {children}
+            </div>
+            </div>
     </div>
   );
 };

@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Select from "react-select";
-import { useEffect, useState } from "react";
+import {  useState } from "react";
 import axios from "axios";
 import { BASE_URL } from "../../../main";
 
@@ -38,7 +38,6 @@ const monthsArray = [
 
 const DeleteData = () => {
   const {
-    register,
     handleSubmit,
     formState: { errors },
     getValues,

@@ -1,50 +1,3 @@
-// import React, { useState, useEffect } from 'react';
-// import { BASE_URL } from '../../main';
-// import axios from "axios";
-
-// const Pagination = () => {
-//   const [data, setData] = useState([]);
-//   const [currentPage, setCurrentPage] = useState(1);
-//   const [totalPages, setTotalPages] = useState(1);
-
-//   useEffect(() => {
-//     fetchData();
-//   }, [currentPage]);
-
-//   const fetchData = async () => {
-//     try {
-//       const response = await fetch(`${currentPage}`);
-//       const result = await response.json();
-
-//       setData(result.data);
-//       setTotalPages(result.total_pages);
-//     } catch (error) {
-//       console.error('Error fetching data:', error);
-//     }
-//   };
-
-//   const handlePageChange = (newPage) => {
-//     setCurrentPage(newPage);
-//   };
-
-//   return (
-
-//       <div>
-//         <button onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 1}>
-//           Prev
-//         </button>
-//         <span>{`Page ${currentPage} of ${totalPages}`}</span>
-//         <button onClick={() => handlePageChange(currentPage + 1)} disabled={currentPage === totalPages}>
-//           Next
-//         </button>
-//       </div>
-//   );
-// };
-
-// export default Pagination;
-
-// Pagination.js
-
 import React from "react";
 
 const Pagination = ({ totalPages, currentPage, onPageChange }) => {
@@ -64,7 +17,7 @@ const Pagination = ({ totalPages, currentPage, onPageChange }) => {
         } hover:bg-blue-700 transition`}
         disabled={currentPage === 1}
       >
-        Previous
+        {"<<"}
       </button>
 
       {pageNumbers.map((page) => (
@@ -75,9 +28,11 @@ const Pagination = ({ totalPages, currentPage, onPageChange }) => {
             page === currentPage
               ? "bg-blue-500 text-white"
               : "bg-gray-300 text-black"
-          } hover:bg-blue-700 transition`}
+          }
+          //  hover:bg-blue-700 transition`
+          }
         >
-          {page}
+        {page}
         </button>
       ))}
 
@@ -90,7 +45,7 @@ const Pagination = ({ totalPages, currentPage, onPageChange }) => {
         } hover:bg-blue-700 transition`}
         disabled={currentPage === totalPages}
       >
-        Next
+        {">>"}
       </button>
     </div>
   );

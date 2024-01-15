@@ -6,24 +6,14 @@ import {
   useGlobalFilter,
   useFilters,
 } from "react-table";
-import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 import PropTypes from "prop-types";
 
-function CustomTable({ columns, data, searchEnabled, filterEnabled }) {
+function CustomTable2 ({ columns, data, filterEnabled }) {
   const {
     getTableBodyProps,
     headerGroups,
     page,
     prepareRow,
-    canPreviousPage,
-    canNextPage,
-    pageCount,
-    gotoPage,
-    nextPage,
-    previousPage,
-    setPageSize,
-    state: { pageIndex, globalFilter, pageSize },
-    setGlobalFilter,
   } = useTable(
     {
       columns,
@@ -39,30 +29,6 @@ function CustomTable({ columns, data, searchEnabled, filterEnabled }) {
   const inputRef = useRef();
   return (
     <div className="bg-white p-4 rounded-xl overflow-x-auto">
-      {searchEnabled && (
-        <div className="mb-4">
-          <input
-            className="bg-gray-50 border border-blue-600 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5   "
-            ref={inputRef}
-            type="text"
-            value={globalFilter || ""}
-            onChange={(e) => {
-              setGlobalFilter(e.target.value || undefined);
-            }}
-            placeholder={`Search...`}
-          />
-          {globalFilter && (
-            <button
-              className="p-2.5 ms-2 text-sm font-medium text-white bg-blue-700 rounded-lg border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300"
-              onClick={() => {
-                setGlobalFilter("");
-              }}
-            >
-              &#x2715;
-            </button>
-          )}
-        </div>
-      )}
 
       <table className="table-auto min-w-full text-sm text-left rtl:text-right text-black overflow-x-auto">
         <thead className="text-xs text-black uppercase bg-teal-300 ">
@@ -135,53 +101,11 @@ function CustomTable({ columns, data, searchEnabled, filterEnabled }) {
         </tbody>
       </table>
 
-      <div className="flex mt-4 space-x-2">
-        <select
-          value={pageSize}
-          onChange={(e) => setPageSize(Number(e.target.value))}
-          className="px-2 py-1 border border-gray-300 w-[300px]"
-        >
-          <option value={10}>10 per page</option>
-          <option value={20}>20 per page</option>
-          <option value={50}>50 per page</option>
-        </select>
-        <span className="text-sm text-black">
-          Page <strong>{pageIndex + 1}</strong> of <strong>{pageCount}</strong>
-        </span>
-        <button
-          className="px-2 py-1 disabled:opacity-50  text-black"
-          onClick={() => gotoPage(0)}
-          disabled={!canPreviousPage}
-        >
-          1
-        </button>{" "}
-        <button
-          className="px-2 py-1 disabled:opacity-50  text-black"
-          onClick={() => previousPage()}
-          disabled={!canPreviousPage}
-        >
-          <FiChevronLeft />
-        </button>{" "}
-        <button
-          className="px-2 py-1 disabled:opacity-50  text-black"
-          onClick={() => nextPage()}
-          disabled={!canNextPage}
-        >
-          <FiChevronRight />
-        </button>{" "}
-        <button
-          className="px-2 py-1 disabled:opacity-50  text-black"
-          onClick={() => gotoPage(pageCount - 1)}
-          disabled={!canNextPage}
-        >
-          last
-        </button>{" "}
-      </div>
     </div>
   );
 }
 
-CustomTable.propTypes = {
+CustomTable2.propTypes = {
   columns: PropTypes.arrayOf(
     PropTypes.shape({
       Header: PropTypes.string.isRequired,
@@ -193,8 +117,8 @@ CustomTable.propTypes = {
   searchEnabled: PropTypes.bool,
 };
 
-CustomTable.defaultProps = {
+CustomTable2.defaultProps = {
   searchEnabled: true,
 };
 
-export default CustomTable;
+export default CustomTable2;

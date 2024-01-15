@@ -93,6 +93,11 @@
     },
     {
         "icon": "bi bi-person-badge-fill",
+        "title": "Delete Data",
+        "path": "/delete-data"
+    },
+    {
+        "icon": "bi bi-person-badge-fill",
         "title": "Repo Agent Approval",
         "path": "/repo-agents-approval"
     }

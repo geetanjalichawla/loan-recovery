@@ -119,9 +119,10 @@ const DeleteData = () => {
   };
 
   return (
-    <div className="max-w-md mx-auto mt-8 p-4 bg-gray-100 rounded-md">
-      <h2 className="text-2xl font-semibold mb-4">Zod Form</h2>
-      <form onSubmit={handleSubmit(onSubmit)}>
+    <>
+      <h2 className="text-2xl font-semibold mb-6">Delete Data</h2>
+      <form className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
+      onSubmit={handleSubmit(onSubmit)}>
         <div className="mb-4">
           <label
             htmlFor="month"
@@ -262,17 +263,18 @@ const DeleteData = () => {
             value={data.totalRecords}
             disabled
             name="totalRecords"
-            className={`border rounded-md `}
+            className={`border rounded-md h-10 p-4`}
           />
         </div>
         <button
           type="submit"
-          className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 focus:outline-none focus:shadow-outline-blue"
+          className="bg-blue-500 text-white py-2 my-3 px-4 col-span-3
+           rounded-md hover:bg-blue-600 focus:outline-none focus:shadow-outline-blue"
         >
           Submit
         </button>
       </form>
-    </div>
+     </>
   );
 };
 

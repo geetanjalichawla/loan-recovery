@@ -53,7 +53,7 @@ const ReleaseVehicleList = () => {
             <div
             className="px-2 py-1 text-center bg-green-500 rounded-lg text-white"
             >
-          Release <ToggleStatus id={row.original.agreementNo} getData={fetchDataFromAPI} status={row.original.status}/>
+          Release <ToggleStatus id={row.original._id} getData={fetchDataFromAPI} status={row.original.status}/>
         </div>
       ),
     }

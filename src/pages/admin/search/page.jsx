@@ -100,7 +100,7 @@ debouncedSearch();
             data.map((data,key)=>(<span key={key} 
                 onClick={()=>setLoan(data)}
             className="text-gray-100 bg-gray-800 font-medium h-10 px-3 py-1 rounded cursor-pointer">
-            {data.agreementNo}
+            {data.regNo}
         </span>))
         }
 

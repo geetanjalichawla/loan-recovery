@@ -49,24 +49,14 @@ const Dashboard = ({ children }) => {
 
   return (
     <div>
-      <Navbar toggleSidebar={toggleSidebar} />
+      <Sidebar />
 
-     
-      {isMobile && (
-        <div className="lg:hidden fixed top-[69px] text-white bg-black left-4 z-50">
-          <button onClick={toggleSidebar} className="text-white p-3 focus:outline-none">
-            {isSidebarOpen ? "<<" : ">>"}
-          </button>
-        </div>
-      )}
-
-      
-      {!isMobile && <Sidebar isOpen={isSidebarOpen} />}
-
-    
-      <div className={`px-10 py-24 ${isMobile && !isSidebarOpen ? "ml-0" : "ml-64"} transition-all ease-in-out`}>
-        {children}
-      </div>
+      <div className="sm:ml-64">
+            <Navbar />
+            <div className="p-10 mt-10">
+            {children}
+            </div>
+            </div>
     </div>
   );
 };

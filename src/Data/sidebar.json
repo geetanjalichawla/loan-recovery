@@ -9,7 +9,20 @@
         "title": "Search",
         "path": "/search"
     },
-
+    {
+        "title": "Office Staff",
+        "icon": "bi  bi-person-badge-fill",
+        "childrens": [
+            {
+                "title": "All Office Staff",
+                "path": "/office-staff/all"
+            },
+            {
+                "title": "Add Office Staff",
+                "path": "/office-staff/add"
+            }
+        ]
+    },
     {
         "title": "Repo Agent",
         "icon": "bi  bi-person-fill",
@@ -34,20 +47,6 @@
         ]
     },
     {
-        "title": "Office Staff",
-        "icon": "bi  bi-person-badge-fill",
-        "childrens": [
-            {
-                "title": "All Office Staff",
-                "path": "/office-staff/all"
-            },
-            {
-                "title": "Add Office Staff",
-                "path": "/office-staff/add"
-            }
-        ]
-    },
-    {
         "title": "Upload Data",
         "icon": "bi  bi-person-badge-fill",
         "childrens": [
@@ -64,6 +63,16 @@
                 "path": "/upload-data/upload-files-data"
             }
         ]
+    },
+    {
+        "icon": "bi bi-person-badge-fill",
+        "title": "Delete Data",
+        "path": "/delete-data"
+    },
+    {
+        "icon": "bi bi-person-badge-fill",
+        "title": "Repo Agent Approval",
+        "path": "/repo-agents-approval"
     },
     {
         "title": "Reports",
@@ -90,15 +99,5 @@
                 "path": "/reports/confirmation-vehicle-list"
             }
         ]
-    },
-    {
-        "icon": "bi bi-person-badge-fill",
-        "title": "Delete Data",
-        "path": "/delete-data"
-    },
-    {
-        "icon": "bi bi-person-badge-fill",
-        "title": "Repo Agent Approval",
-        "path": "/repo-agents-approval"
     }
 ]

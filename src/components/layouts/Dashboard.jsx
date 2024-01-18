@@ -39,7 +39,7 @@ const Dashboard = ({ children }) => {
         <button
           onClick={toggleSidebar}
           className={`${isOpen ? "right-0" : "left-0"}
-     bg-black text-white absolute top-[69px] w-15 py-3 px-4 mr-1 h-15 z-50 transition-all ease-in-out`}
+     bg-black text-white fixed top-[69px] w-15 py-3 px-4 mr-1 h-15 z-50 transition-all ease-in-out`}
         >
           {isOpen ? (
             "X"

@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { BASE_URL } from "../../../main";
+import { useNavigate } from "react-router-dom";
 
 const AdminDashboard = () => {
   const token = localStorage.getItem("token");
+  const Navigate = useNavigate();
 
   const [dashboardData, setDashboardData] = useState({
     totalCount: 0,
@@ -27,28 +29,39 @@ const AdminDashboard = () => {
       });
   }, [token]);
 
+
+  const handleButtonClick = (route) => {
+    // Navigate to the specified route
+    Navigate(route);
+  };
+
   return (
     <div className="grid grid-cols-3 gap-8 p-4">
-      <div className="dashboard-card bg-blue-500 text-white p-6 rounded-lg">
-        <h3 className="text-2xl font-bold mb-4">Total Count</h3>
+      <button onClick={() => handleButtonClick("/reports/all-vehicle-list")}
+      className="dashboard-card bg-blue-500 text-white p-6 rounded-lg">
+        <span className="text-2xl font-bold mb-4">Total Count</span>
         <p className="text-lg">{dashboardData.totalCount}</p>
-      </div>
-      <div className="dashboard-card bg-yellow-500 text-white p-6 rounded-lg">
+      </button>
+      <button onClick={() => handleButtonClick("/reports/hold-vehicle-list")}
+      className="dashboard-card bg-yellow-500 text-white p-6 rounded-lg">
         <h3 className="text-2xl font-bold mb-4">Hold Count</h3>
         <p className="text-lg">{dashboardData.holdCount}</p>
-      </div>
-      <div className="dashboard-card bg-red-600 text-white p-6 rounded-lg">
+      </button>
+      <button onClick={() => handleButtonClick("/reports/repo-vehicle-list")}
+      className="dashboard-card bg-red-600 text-white p-6 rounded-lg">
         <h3 className="text-2xl font-bold mb-4">Repo Count</h3>
         <p className="text-lg">{dashboardData.repoCount}</p>
-      </div>
-      <div className="dashboard-card bg-green-500 text-white p-6 rounded-lg">
+      </button>
+      <button onClick={() => handleButtonClick("/reports/release-vehicle-list")}
+      className="dashboard-card bg-green-500 text-white p-6 rounded-lg">
         <h3 className="text-2xl font-bold mb-4">Release Count</h3>
         <p className="text-lg">{dashboardData.releaseCount}</p>
-      </div>
-      <div className="dashboard-card bg-indigo-500 text-white p-6 rounded-lg">
+      </button>
+      <button onClick={() => handleButtonClick("/reports/confirmation-vehicle-list")}
+      className="dashboard-card bg-indigo-500 text-white p-6 rounded-lg">
         <h3 className="text-2xl font-bold mb-4">Confirmation Count</h3>
         <p className="text-lg">{dashboardData.confirmationCount}</p>
-      </div>
+      </button>
     </div>
   );
 };

@@ -65,7 +65,7 @@ const Dashboard = ({ children }) => {
         <Sidebar />
       )}
 
-      {isOpen ? <Sidebar isOpen /> : null}
+      {isOpen ? <Sidebar isOpen openSidebar={setIsOpen} /> : null}
 
       <div
         className=" px-10 py-24 sm:ml-64 transition-all ease-in-out"

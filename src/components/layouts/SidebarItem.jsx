@@ -2,8 +2,14 @@ import PropTypes from "prop-types";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
-const SidebarItem = ({ item }) => {
+const SidebarItem = ({ openSidebar, item }) => {
   const [open, setOpen] = useState(false);
+
+  const handleLinkClick = () => {
+    if (window.innerWidth < 768) {
+      openSidebar(false);
+    }
+  };
 
   if (item.childrens) {
     return (
@@ -15,7 +21,8 @@ const SidebarItem = ({ item }) => {
           </span>
           <i className="bi-chevron-down toggle-btn"></i>
         </div>
-        <div className="sidebar-content">
+        <div 
+        className="sidebar-content">
           {item.childrens.map((child, index) => (
             <SidebarItem key={index} item={child} />
           ))}
@@ -24,7 +31,8 @@ const SidebarItem = ({ item }) => {
     );
   } else {
     return (
-      <Link to={item.path || "#"} className="sidebar-item plain">
+      <Link onClick={handleLinkClick}
+      to={item.path || "#"} className="sidebar-item plain">
         {item.icon && <i className={item.icon}></i>}
         {item.title}
       </Link>

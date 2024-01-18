@@ -1,62 +1,78 @@
-// import React from "react";
-// import Navbar from "./Navbar";
-// import Sidebar from "./Sidebar";
-
-// const Dashboard = ({ children }) => {
-//   return (
-//     <div>
-//       <Navbar />
-//       <Sidebar />
-
-//       <div className=" px-10 py-24 sm:ml-64">{children}</div>
-//     </div>
-//   );
-// };
-
-// export default Dashboard;
-
 import React, { useState, useEffect } from "react";
 import Navbar from "./Navbar";
 import Sidebar from "./Sidebar";
 
 const Dashboard = ({ children }) => {
-  const [isMobile, setIsMobile] = useState(false);
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [isMobile, setIsMobile] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
+
+  const toggleSidebar = () => {
+    setIsOpen(!isOpen);
+  };
 
   useEffect(() => {
-    // Check if it's a mobile screen
-    const checkIsMobile = () => {
-      setIsMobile(window.innerWidth < 768); // Adjust the breakpoint as needed
+    const checkScreenWidth = () => {
+      if (window.innerWidth < 768) {
+        setIsMobile(true);
+      } else {
+        setIsMobile(false);
+      }
     };
 
-    checkIsMobile(); // Initial check
+    // Check screen width on component mount
+    checkScreenWidth();
 
-    // Update isMobile state on window resize
-    const handleResize = () => {
-      checkIsMobile();
-    };
+    // Attach event listener for changes in screen width
+    window.addEventListener("resize", checkScreenWidth);
 
-    window.addEventListener("resize", handleResize);
-
+    // Remove event listener on component unmount
     return () => {
-      window.removeEventListener("resize", handleResize);
+      window.removeEventListener("resize", checkScreenWidth);
     };
   }, []);
 
-  const toggleSidebar = () => {
-    setIsSidebarOpen(!isSidebarOpen);
-  };
-
   return (
-    <div>
-      <Sidebar />
+    <div className="">
+      <Navbar className="" />
 
-      <div className="sm:ml-64">
-            <Navbar />
-            <div className="p-10 mt-10">
-            {children}
-            </div>
-            </div>
+      {isMobile ? (
+        <button
+          onClick={toggleSidebar}
+          className={`${isOpen ? "right-0" : "left-0"}
+     bg-black text-white absolute top-[69px] w-15 py-3 px-4 mr-1 h-15 z-50 transition-all ease-in-out`}
+        >
+          {isOpen ? (
+            "X"
+          ) : (
+            <svg
+              class="w-5 h-6 text-gray-800 dark:text-white"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 17 14"
+            >
+              <path
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M1 1h15M1 7h15M1 13h15"
+              />
+            </svg>
+          )}
+        </button>
+      ) : (
+        <Sidebar />
+      )}
+
+      {isOpen ? <Sidebar isOpen /> : null}
+
+      <div
+        className=" px-10 py-24 sm:ml-64 transition-all ease-in-out"
+        // className={`sm:px-10 sm:py-24`}
+      >
+        {children}
+      </div>
     </div>
   );
 };

@@ -60,12 +60,11 @@
   }
   
   .sidebar{
-    color: white;
-    width: 260px;
     flex-shrink: 0;
-    height: 100%;
     overflow: auto;
   }
+
+  
   
   
   .sidebar-item{

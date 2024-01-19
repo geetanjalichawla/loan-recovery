@@ -7,7 +7,7 @@ import Dashboard from "./components/layouts/Dashboard";
 import AddAgentForm from "./pages/admin/repo-agent/add";
 import { useDispatch, useSelector } from "react-redux";
 import toast, { Toaster } from "react-hot-toast";
-import AdminDashboard from "./pages/admin/Home/dashboard";
+import AdminDashboard from "./pages/admin/Home/AdminDashboard";
 import RepoAgentList from "./pages/admin/repo-agent/all";
 import GenerateRepoId from "./pages/admin/repo-agent/gentrate-id";
 import IdCardList from "./pages/admin/repo-agent/id-all";

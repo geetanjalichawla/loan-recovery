@@ -17,10 +17,12 @@ const schema = z.object({
   validTo: z.string().min(1, "Valid To is required"),
   status: z.string().min(1, "Status is required"),
   qrCode: z.string().optional(),
-  photo:   z.instanceof(FileList, "Photo is required")
-  .refine((files) => files.length > 0, { message: "Photo is required" }),
-  signature: z.instanceof(FileList, "Signature is required")
-  .refine((files) => files.length > 0, { message: "Signature is required" }),
+  photo: z
+    .instanceof(FileList, "Photo is required")
+    .refine((files) => files.length > 0, { message: "Photo is required" }),
+  signature: z
+    .instanceof(FileList, "Signature is required")
+    .refine((files) => files.length > 0, { message: "Signature is required" }),
 });
 const RepoAgentIdCard = () => {
   const {
@@ -34,7 +36,6 @@ const RepoAgentIdCard = () => {
     resolver: zodResolver(schema),
   });
   const token = localStorage.getItem("token");
-
 
   const [cardId, setCardId] = useState("");
 
@@ -54,10 +55,8 @@ const RepoAgentIdCard = () => {
     }
   };
   useEffect(() => {
-
-
     fetchStaffId();
-  }, [ token]);
+  }, [token]);
 
   // eslint-disable-next-line no-unused-vars
   const [file, setFile] = useState(null);
@@ -66,18 +65,22 @@ const RepoAgentIdCard = () => {
   const onSubmit = async (data) => {
     try {
       // making api call to submit form data
-      const response = await axios.post(`${BASE_URL}/create-id-card`, {...data, photo: data.photo[0], signature: data.signature[0]}, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type":"multipart/form-data"
-        },
-      });
+      const response = await axios.post(
+        `${BASE_URL}/create-id-card`,
+        { ...data, photo: data.photo[0], signature: data.signature[0] },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
       // handling api response
       console.log("API Response:", response.data);
       // success toast
       reset();
       fetchStaffId();
-      
+
       toast.success("Form submitted successfully");
     } catch (error) {
       if (error.response) {
@@ -100,15 +103,15 @@ const RepoAgentIdCard = () => {
   const onGenerateQr = async () => {
     setGenQr(true);
     axios
-      .post(`${BASE_URL}/generate-qr/${cardId}`, null,{
+      .post(`${BASE_URL}/generate-qr/${cardId}`, null, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       })
       .then((response) => {
         console.log(response);
-        setValue('qrCode',response.data.qrCodeImage)
-        
+        setValue("qrCode", response.data.qrCodeImage);
+
         setGenQr(false);
       });
   };
@@ -123,16 +126,38 @@ const RepoAgentIdCard = () => {
   const handleSignatureChange = (e) => {
     const file = e.target.files;
     console.log({ file });
-    setFile(file)
+    setFile(file);
     setValue("signature", file);
     console.log({ values });
   };
-
   // const value = getValues(); // check this if you want to use the values
+
+  const [isMobile, setIsMobile] = useState(true);
+  useEffect(() => {
+    const checkScreenWidth = () => {
+      if (window.innerWidth < 768) {
+        setIsMobile(true);
+      } else {
+        setIsMobile(false);
+      }
+    };
+
+    // Check screen width on component mount
+    checkScreenWidth();
+
+    // Attach event listener for changes in screen width
+    window.addEventListener("resize", checkScreenWidth);
+
+    // Remove event listener on component unmount
+    return () => {
+      window.removeEventListener("resize", checkScreenWidth);
+    };
+  }, []);
+
   return (
     <>
       <form
-        className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
+        className={`${isMobile ? "flex flex-col p-5 mt-5" : "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"} w-full `}
         onSubmit={handleSubmit(onSubmit)}
       >
         <div className="mb-4">
@@ -280,8 +305,8 @@ const RepoAgentIdCard = () => {
               errors.status ? "border-red-500" : ""
             }`}
           >
-            <option value={'active'}>Active</option>
-            <option value={'inactive'}>InActive</option>
+            <option value={"active"}>Active</option>
+            <option value={"inactive"}>InActive</option>
           </select>
           {errors.status && (
             <span className="text-red-500 text-xs">
@@ -302,9 +327,7 @@ const RepoAgentIdCard = () => {
 
           <img
             className="w-full aspect-square bg-black border border-black "
-            src={
-              values.qrCode
-            }
+            src={values.qrCode}
           />
         </div>
         <div className="p-4">
@@ -322,7 +345,11 @@ const RepoAgentIdCard = () => {
           <h5>Photo</h5>
           <img
             className="w-full aspect-square bg-white border border-black "
-            src={values.photo  && values.photo[0]&& URL.createObjectURL(values.photo[0])}
+            src={
+              values.photo &&
+              values.photo[0] &&
+              URL.createObjectURL(values.photo[0])
+            }
           />
         </div>
 
@@ -335,20 +362,26 @@ const RepoAgentIdCard = () => {
             }`}
           />
           {errors.signature && (
-            <span className="text-red-500 text-xs">{errors.signature.message}</span>
+            <span className="text-red-500 text-xs">
+              {errors.signature.message}
+            </span>
           )}
 
           <h5>Signature</h5>
           <img
             className="w-full aspect-square bg-white border border-black "
-            src={values.signature  && values.signature[0]&& URL.createObjectURL(values.signature[0])}
+            src={
+              values.signature &&
+              values.signature[0] &&
+              URL.createObjectURL(values.signature[0])
+            }
           />
         </div>
 
         <button
           disabled={isSubmitting}
           type="submit"
-          className="h-10 btn bg-blue-500 text-white  rounded-md uppercase hover:opacity-95 disabled:opacity-85 w-full"
+          className="h-10 btn col-span-3 bg-blue-500 text-white  rounded-md uppercase hover:opacity-95 disabled:opacity-85 w-full"
         >
           {isSubmitting ? "Please Wait..." : "Submit"}
         </button>

@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Select from "react-select";
-import {  useState } from "react";
+import {  useState, useEffect } from "react";
 import axios from "axios";
 import { BASE_URL } from "../../../main";
 
@@ -50,6 +50,7 @@ const DeleteData = () => {
   const onSubmit = (data) => {
     console.log(data);
   };
+  const [isMobile, setIsMobile] = useState(true);
   const [data, setData] = useState({
     bankNameArray: [],
     branchNameArray: [],
@@ -117,10 +118,31 @@ const DeleteData = () => {
       });
   };
 
+  useEffect(() => {
+    const checkScreenWidth = () => {
+      if (window.innerWidth < 768) {
+        setIsMobile(true);
+      } else {
+        setIsMobile(false);
+      }
+    };
+
+    // Check screen width on component mount
+    checkScreenWidth();
+
+    // Attach event listener for changes in screen width
+    window.addEventListener("resize", checkScreenWidth);
+
+    // Remove event listener on component unmount
+    return () => {
+      window.removeEventListener("resize", checkScreenWidth);
+    };
+  }, []);
+
   return (
     <>
-      <h2 className="text-2xl font-semibold mb-6">Delete Data</h2>
-      <form className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
+      <h2 className="text-2xl px-6 sm:px-[40%] font-semibold mb-6">Delete Data</h2>
+      <form className= {`${isMobile ? "flex flex-col p-5" : "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"} w-full`}
       onSubmit={handleSubmit(onSubmit)}>
         <div className="mb-4">
           <label

@@ -42,6 +42,7 @@ const BankWiseData = () => {
   });
 
   const [file, setFile] = useState(null);
+  const [isMobile, setIsMobile] = useState(true);
 
   const token = localStorage.getItem("token");
 
@@ -100,9 +101,29 @@ const BankWiseData = () => {
     setValue("file", file);
   };
 
+  useEffect(() => {
+    const checkScreenWidth = () => {
+      if (window.innerWidth < 768) {
+        setIsMobile(true);
+      } else {
+        setIsMobile(false);
+      }
+    };
+
+    // Check screen width on component mount
+    checkScreenWidth();
+
+    // Attach event listener for changes in screen width
+    window.addEventListener("resize", checkScreenWidth);
+
+    // Remove event listener on component unmount
+    return () => {
+      window.removeEventListener("resize", checkScreenWidth);
+    };
+  }, []);
+
   return (
-    <form
-      className="p-4 grid grid-cols-2 gap-4"
+    <form className= {` ${isMobile ? "flex flex-col p-5" : "p-4 grid grid-cols-2 gap-4"}`}
       onSubmit={handleSubmit(onSubmit)}
     >
       <div className="mb-4">

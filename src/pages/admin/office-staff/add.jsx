@@ -107,8 +107,6 @@ const AddStaffForm = () => {
   };
 
   useEffect(() => {
-
-    
     fetchStaffId();
   }, [token]);
 
@@ -176,10 +174,33 @@ const AddStaffForm = () => {
 
   const value = getValues(); // check this if you want to use the values
   console.log({ value });
+
+  const [isMobile, setIsMobile] = useState(true);
+  useEffect(() => {
+    const checkScreenWidth = () => {
+      if (window.innerWidth < 768) {
+        setIsMobile(true);
+      } else {
+        setIsMobile(false);
+      }
+    };
+
+    // Check screen width on component mount
+    checkScreenWidth();
+
+    // Attach event listener for changes in screen width
+    window.addEventListener("resize", checkScreenWidth);
+
+    // Remove event listener on component unmount
+    return () => {
+      window.removeEventListener("resize", checkScreenWidth);
+    };
+  }, []);
+
   return (
     <>
       <form
-        className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
+        className= {`${isMobile ? "flex flex-col p-5 mt-5" : "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"} w-full `}
         onSubmit={handleSubmit(onSubmit)}
       >
         <>
@@ -358,20 +379,22 @@ const AddStaffForm = () => {
               setSelectedState(e.target.value);
             }}
             className={`mt-1 p-2 border rounded-md focus:outline-none focus:ring focus:border-blue-300 ${
-              errors.State ? "border-red-500" : ""
+              errors.state ? "border-red-500" : ""
             }`}
           >
-            <option value="" disabled>
+            <option 
+            value="" disabled>
               Select State
             </option>
             {Object.keys(citiesData).map((State) => (
-              <option key={State} value={State}>
+              <option className=""
+              key={State} value={State}>
                 {State}
               </option>
             ))}
           </select>
-          {errors.State && (
-            <span className="text-red-500 text-xs">{errors.State.message}</span>
+          {errors.state && (
+            <span className="text-red-500 text-xs">{errors.state.message}</span>
           )}
         </div>
 

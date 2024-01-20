@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import Select from "react-select";
@@ -40,6 +40,7 @@ const CombineData = () => {
       });
 
       const [file, setFile] = useState(null);
+      const [isMobile, setIsMobile] = useState(true);
 
       const token = localStorage.getItem("token");
 
@@ -81,14 +82,34 @@ const CombineData = () => {
       setValue("file", file);
     };
 
+    useEffect(() => {
+      const checkScreenWidth = () => {
+        if (window.innerWidth < 768) {
+          setIsMobile(true);
+        } else {
+          setIsMobile(false);
+        }
+      };
+  
+      // Check screen width on component mount
+      checkScreenWidth();
+  
+      // Attach event listener for changes in screen width
+      window.addEventListener("resize", checkScreenWidth);
+  
+      // Remove event listener on component unmount
+      return () => {
+        window.removeEventListener("resize", checkScreenWidth);
+      };
+    }, []);
 
 
   return (
     <form 
-    className="p-4 grid grid-cols-2 gap-4"
+    className= {`${isMobile ? "flex flex-col p-5" : "p-4 grid grid-cols-2 gap-4"}`}
       onSubmit={handleSubmit(onSubmit)}>
 
-      <div className="mb-2 col-span-2">
+      <div className="mb-3 col-span-1">
         <label className="block text-sm font-medium text-black">
           Select Month
           <span className="text-red-600">*</span>
@@ -112,7 +133,7 @@ const CombineData = () => {
         )}
       </div>
 
-      <div className="my-4">
+      <div className="mb-3">
         <label htmlFor="file" className="block text-sm font-medium text-black">
           Choose file to upload
           <span className="text-red-600">*</span>

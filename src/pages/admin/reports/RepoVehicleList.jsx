@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { FaSearch as SearchIcon } from 'react-icons/fa'; // Assuming FaSearch is the icon you want to use
 import { BASE_URL } from "../../../main";
-import CustomTable2 from "../../../components/utils/customTable2";
+import CustomTable2 from "../../../components/utils/CustomTable2";
 
 
 const ReleaseVehicleList = () => {

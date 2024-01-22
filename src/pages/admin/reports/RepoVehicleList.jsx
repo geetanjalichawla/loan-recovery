@@ -5,8 +5,8 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { FaSearch as SearchIcon } from 'react-icons/fa'; // Assuming FaSearch is the icon you want to use
 import { BASE_URL } from "../../../main";
+import CustomTable2 from "../../../components/utils/customTable2";
 
-import CustomTable from "../../../components/utils/CustomTable2";
 
 const ReleaseVehicleList = () => {
   const [data, setData] = useState({ data: [], totalPages: 0 });
@@ -96,7 +96,7 @@ const ReleaseVehicleList = () => {
           </div>
       </div>
 
-      <CustomTable columns={columns} data={data.data} searchEnabled={true} />
+      <CustomTable2 columns={columns} data={data.data} searchEnabled={true} />
 
 {/* pagination here */}
       <div className="flex justify-center items-center space-x-2">

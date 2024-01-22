@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
 import { BASE_URL } from "../../../main";
-import CustomTable from "../../../components/utils/customTable2";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { FaSearch as SearchIcon } from 'react-icons/fa'; // Assuming FaSearch is the icon you want to use
+import CustomTable2 from "../../../components/utils/CustomTable2";
 
 function UploadFilesData() {
   const [data, setData] = useState({ data: [], totalPages: 0 });
@@ -126,7 +126,7 @@ function UploadFilesData() {
       </div>
 
 
-      <CustomTable columns={columns} data={data.data} searchEnabled={true} />
+      <CustomTable2 columns={columns} data={data.data} searchEnabled={true} />
 
 
 

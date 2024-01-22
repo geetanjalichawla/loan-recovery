@@ -91,7 +91,7 @@ const SearchComponent = () => {
       </form>
 
       <div className="w-full mt-3 grid grid-cols-1 md:grid-cols-3">
-        <div className="py-4 border-solid border-4 mr-3 border-gray-800 rounded-lg flex flex-wrap justify-evenly gap-1">
+        <div className="py-4 border-solid border-4 mr-3 border-gray-800 rounded-lg flex flex-wrap justify-evenly gap-1 max-h-screen overflow-y-auto">
           {data.map((data, key) => (
             <span
               key={key}
@@ -102,7 +102,8 @@ const SearchComponent = () => {
             </span>
           ))}
         </div>
-        <div className="grid grid-cols-2 md:grid-cols-1 lg:grid-cols-2 col-span-1 md:col-span-2 gap-3">
+<div className="w-full col-span-1 md:col-span-2">
+<div className="grid grid-cols-2 md:grid-cols-1 lg:grid-cols-2  gap-3 w-full">
           {/* Display selected loan details in disabled input fields */}
           {selectedLoan && (
             <>
@@ -223,6 +224,7 @@ const SearchComponent = () => {
             </>
           )}
         </div>
+</div>
       </div>
     </div>
   );

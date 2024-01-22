@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import ProtectedRoute from "./pages/auth/ProtectedRoute";
-import { HashRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import SignIn from "./pages/auth/Signin";
 import Signup from "./pages/auth/SignUp";
 import Dashboard from "./components/layouts/Dashboard";

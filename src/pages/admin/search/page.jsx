@@ -9,7 +9,7 @@ const SearchComponent = () => {
     engineNo: "",
     chasisNo: "",
   });
-  console.log(searchParams);
+  console.log  (searchParams);
   const [data, setData] = useState([]);
 
   const debouncedSearch = _.debounce(() => {
@@ -31,6 +31,7 @@ const SearchComponent = () => {
   }, 1000); // Adjust the debounce time as needed (in milliseconds)
 
   useEffect(() => {
+    if(searchParams.lastDigit || searchParams.chasisNo|| searchParams.engineNo ||searchParams.agreementNo)
     debouncedSearch();
   }, [searchParams, debouncedSearch]);
 
@@ -102,129 +103,196 @@ const SearchComponent = () => {
             </span>
           ))}
         </div>
-<div className="w-full col-span-1 md:col-span-2">
-<div className="grid grid-cols-2 md:grid-cols-1 lg:grid-cols-2  gap-3 w-full">
-          {/* Display selected loan details in disabled input fields */}
-          {selectedLoan && (
-            <>
-              <div className="mb-2">
-                <label className="font-medium text-black">
-                  Agreement No
-                </label>
-                <input className="rounded-lg h-10 p-4" type="text" value={selectedLoan.agreementNo} disabled />
-              </div>
+        <div className="w-full col-span-1 md:col-span-2">
+          <div className="grid grid-cols-2 md:grid-cols-1 lg:grid-cols-2  gap-3 w-full">
+            {/* Display selected loan details in disabled input fields */}
+            {selectedLoan && (
+              <>
+                <div className="mb-2">
+                  <label className="font-medium text-black">Agreement No</label>
+                  <input
+                    className="rounded-lg h-10 p-4"
+                    type="text"
+                    value={selectedLoan.agreementNo}
+                    disabled
+                  />
+                </div>
 
-              <div className="mb-2">
-                <label className="font-medium text-black">Bank Name</label>
-                <input className="rounded-lg h-10 p-4" type="text" value={selectedLoan.bankName} disabled />
-              </div>
+                <div className="mb-2">
+                  <label className="font-medium text-black">Bank Name</label>
+                  <input
+                    className="rounded-lg h-10 p-4"
+                    type="text"
+                    value={selectedLoan.bankName}
+                    disabled
+                  />
+                </div>
 
-              <div className="mb-2">
-                <label className="font-medium text-black">Branch</label>
-                <input className="rounded-lg h-10 p-4" type="text" value={selectedLoan.branch} disabled />
-              </div>
+                <div className="mb-2">
+                  <label className="font-medium text-black">Branch</label>
+                  <input
+                    className="rounded-lg h-10 p-4"
+                    type="text"
+                    value={selectedLoan.branch}
+                    disabled
+                  />
+                </div>
 
-              <div className="mb-2">
-                <label className="font-medium text-black">
-                  Call Center No 1
-                </label>
-                <input className="rounded-lg h-10 p-4"
-                  type="text"
-                  value={selectedLoan.callCenterNo1}
-                  disabled
-                />
-              </div>
+                <div className="mb-2">
+                  <label className="font-medium text-black">
+                    Call Center No 1
+                  </label>
+                  <input
+                    className="rounded-lg h-10 p-4"
+                    type="text"
+                    value={selectedLoan.callCenterNo1}
+                    disabled
+                  />
+                </div>
 
-              <div className="mb-2">
-                <label className="font-medium text-black">
-                  Call Center No 1 Name
-                </label>
-                <input className="rounded-lg h-10 p-4"
-                  type="text"
-                  value={selectedLoan.callCenterNo1Name}
-                  disabled
-                />
-              </div>
+                <div className="mb-2">
+                  <label className="font-medium text-black">
+                    Call Center No 1 Name
+                  </label>
+                  <input
+                    className="rounded-lg h-10 p-4"
+                    type="text"
+                    value={selectedLoan.callCenterNo1Name}
+                    disabled
+                  />
+                </div>
 
-              <div className="mb-2">
-                <label className="font-medium text-black">
-                  Call Center No 2
-                </label>
-                <input className="rounded-lg h-10 p-4"
-                  type="text"
-                  value={selectedLoan.callCenterNo2}
-                  disabled
-                />
-              </div>
+                <div className="mb-2">
+                  <label className="font-medium text-black">
+                    Call Center No 2
+                  </label>
+                  <input
+                    className="rounded-lg h-10 p-4"
+                    type="text"
+                    value={selectedLoan.callCenterNo2}
+                    disabled
+                  />
+                </div>
 
-              <div className="mb-2">
-                <label className="font-medium text-black">
-                  Call Center No 2 Name
-                </label>
-                <input className="rounded-lg h-10 p-4"
-                  type="text"
-                  value={selectedLoan.callCenterNo2Name}
-                  disabled
-                />
-              </div>
+                <div className="mb-2">
+                  <label className="font-medium text-black">
+                    Call Center No 2 Name
+                  </label>
+                  <input
+                    className="rounded-lg h-10 p-4"
+                    type="text"
+                    value={selectedLoan.callCenterNo2Name}
+                    disabled
+                  />
+                </div>
 
-              <div className="mb-2">
-                <label className="font-medium text-black">Chasis No</label>
-                <input className="rounded-lg h-10 p-4" type="text" value={selectedLoan.chasisNo} disabled />
-              </div>
+                <div className="mb-2">
+                  <label className="font-medium text-black">Chasis No</label>
+                  <input
+                    className="rounded-lg h-10 p-4"
+                    type="text"
+                    value={selectedLoan.chasisNo}
+                    disabled
+                  />
+                </div>
 
-              <div className="mb-2">
-                <label className="font-medium text-black">Created At</label>
-                <input className="rounded-lg h-10 p-4" type="text" value={selectedLoan.createdAt} disabled />
-              </div>
+                <div className="mb-2">
+                  <label className="font-medium text-black">Created At</label>
+                  <input
+                    className="rounded-lg h-10 p-4"
+                    type="text"
+                    value={selectedLoan.createdAt}
+                    disabled
+                  />
+                </div>
 
-              <div className="mb-2">
-                <label className="font-medium text-black">
-                  Customer Name
-                </label>
-                <input className="rounded-lg h-10 p-4" type="text" value={selectedLoan.customerName} disabled />
-              </div>
+                <div className="mb-2">
+                  <label className="font-medium text-black">
+                    Customer Name
+                  </label>
+                  <input
+                    className="rounded-lg h-10 p-4"
+                    type="text"
+                    value={selectedLoan.customerName}
+                    disabled
+                  />
+                </div>
 
-              <div className="mb-2">
-                <label className="font-medium text-black">Engine No</label>
-                <input className="rounded-lg h-10 p-4" type="text" value={selectedLoan.engineNo} disabled />
-              </div>
+                <div className="mb-2">
+                  <label className="font-medium text-black">Engine No</label>
+                  <input
+                    className="rounded-lg h-10 p-4"
+                    type="text"
+                    value={selectedLoan.engineNo}
+                    disabled
+                  />
+                </div>
 
-              <div className="mb-2">
-                <label className="font-medium text-black">File Name</label>
-                <input className="rounded-lg h-10 p-4" type="text" value={selectedLoan.fileName} disabled />
-              </div>
+                <div className="mb-2">
+                  <label className="font-medium text-black">File Name</label>
+                  <input
+                    className="rounded-lg h-10 p-4"
+                    type="text"
+                    value={selectedLoan.fileName}
+                    disabled
+                  />
+                </div>
 
-              <div className="mb-2">
-                <label className="font-medium text-black">Last Digit</label>
-                <input className="rounded-lg h-10 p-4" type="text" value={selectedLoan.lastDigit} disabled />
-              </div>
+                <div className="mb-2">
+                  <label className="font-medium text-black">Last Digit</label>
+                  <input
+                    className="rounded-lg h-10 p-4"
+                    type="text"
+                    value={selectedLoan.lastDigit}
+                    disabled
+                  />
+                </div>
 
-              <div className="mb-2">
-                <label className="font-medium text-black">Load Status</label>
-                <input className="rounded-lg h-10 p-4" type="text" value={selectedLoan.loadStatus} disabled />
-              </div>
+                <div className="mb-2">
+                  <label className="font-medium text-black">Load Status</label>
+                  <input
+                    className="rounded-lg h-10 p-4"
+                    type="text"
+                    value={selectedLoan.loadStatus}
+                    disabled
+                  />
+                </div>
 
-              <div className="mb-2">
-                <label className="font-medium text-black">Month</label>
-                <input className="rounded-lg h-10 p-4" type="text" value={selectedLoan.month} disabled />
-              </div>
+                <div className="mb-2">
+                  <label className="font-medium text-black">Month</label>
+                  <input
+                    className="rounded-lg h-10 p-4"
+                    type="text"
+                    value={selectedLoan.month}
+                    disabled
+                  />
+                </div>
 
-              <div className="mb-2">
-                <label className="font-medium text-black">
-                  Registration No
-                </label>
-                <input className="rounded-lg h-10 p-4" type="text" value={selectedLoan.regNo} disabled />
-              </div>
+                <div className="mb-2">
+                  <label className="font-medium text-black">
+                    Registration No
+                  </label>
+                  <input
+                    className="rounded-lg h-10 p-4"
+                    type="text"
+                    value={selectedLoan.regNo}
+                    disabled
+                  />
+                </div>
 
-              <div className="mb-2">
-                <label className="font-medium text-black">Status</label>
-                <input className="rounded-lg h-10 p-4" type="text" value={selectedLoan.status} disabled />
-              </div>
-            </>
-          )}
+                <div className="mb-2">
+                  <label className="font-medium text-black">Status</label>
+                  <input
+                    className="rounded-lg h-10 p-4"
+                    type="text"
+                    value={selectedLoan.status}
+                    disabled
+                  />
+                </div>
+              </>
+            )}
+          </div>
         </div>
-</div>
       </div>
     </div>
   );

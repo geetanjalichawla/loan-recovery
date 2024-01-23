@@ -42,7 +42,7 @@ const App = () => {
   }, [dispatch, error, message]);
 
   return (
-    <Router>
+    <>
       <Routes>
         <Route path="/register" element={<Signup />} />
 
@@ -237,7 +237,7 @@ const App = () => {
         />
       </Routes>
       <Toaster />
-    </Router>
+    </>
   );
 };
 
